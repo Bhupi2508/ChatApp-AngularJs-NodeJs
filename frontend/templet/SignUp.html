@@ -14,86 +14,119 @@
 
     <!-- CSS Styles -->
     <style>
-        form {
-            background-color: burlywood;
-            margin-left: auto;
-            margin-top: 28px;
-            margin-bottom: auto;
-            margin-right: auto;
-            width: 450px;
+        body {
+            background-color: #f5f5f5;
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+        }
+
+        .container {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+        }
+
+        .signup-form {
+            background-color: #ffffff;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
             padding: 30px;
-        }
-
-        h1 {
-            margin-left: 49px;
-            color: black;
-            font-size: 28px;
-        }
-
-        button {
-            width: 200px;
-            height: 40px;
-            margin-left: auto;
-            margin-right: auto;
-            text-align: center;
-            font-size: 20px;
-            border: none;
-            background-color: green;
-            color: floralwhite;
-            display: block;
-        }
-
-        input {
+            border-radius: 4px;
             width: 450px;
-            height: 30px;
-            margin-top: 10px;
-            margin-left: auto;
-            margin-right: auto;
-            margin-bottom: 10px;
-            background-color: #ddd;
-            border: 1px solid #f1f1f1;
-            padding: 5px;
+            max-width: 100%;
+        }
+
+        .form-title {
+            text-align: center;
+            font-size: 28px;
+            color: #333333;
+            margin-bottom: 20px;
+        }
+
+        .form-group {
+            margin-bottom: 20px;
+        }
+
+        .form-group label {
             display: block;
+            font-size: 16px;
+            font-weight: bold;
+            margin-bottom: 5px;
+            color: #555555;
         }
 
-        a:link {
-            margin-left: 8px;
-            margin-right: 1px;
+        .form-group input {
+            width: 100%;
+            height: 40px;
+            padding: 8px;
+            border: 1px solid #dddddd;
+            border-radius: 4px;
+        }
+
+        .form-group button {
+            width: 100%;
+            height: 40px;
+            background-color: #4caf50;
+            color: #ffffff;
+            font-size: 16px;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+        }
+
+        .form-group button:hover {
+            background-color: #45a049;
+        }
+
+        .form-footer {
+            text-align: center;
+            margin-top: 20px;
+        }
+
+        .form-footer a {
+            color: #555555;
             text-decoration: none;
-            font-size: 17px;
-        }
-
-        p {
-            margin-left: 115px;
+            font-size: 14px;
         }
     </style>
 </head>
 
-<body background="../assets/3.jpg" ng-app="myApp" ng-controller="controlSignup">
-    <form>
+<body>
+    <div class="container">
+        <form class="signup-form" ng-app="myApp" ng-controller="controlSignup">
+            <h2 class="form-title">CREATE YOUR ACCOUNT</h2>
 
-        <h1>CREATE YOUR ACCOUNT</h1>
+            <div class="form-group">
+                <label for="firstname">Firstname</label>
+                <input type="text" placeholder="Enter your first name" name="firstname" ng-model="firstname" required>
+            </div>
 
-        <!-- input for signup form -->
-        <div class="userinput">
-            <br>
-            <label for="firstname"><b>Firstname</b></label>
-            <input type="text" placeholder="Enter your first name" name="firstname" ng-model="firstname" required>
-            <label for="lastname"><b>Lastname</b></label>
-            <input type="text" placeholder="Enter your last name" name="lastname" ng-model="lastname" required>
-            <label for="email"><b>Email</b></label>
-            <input type="email" placeholder="Enter your email" name="email" ng-model="email" required>
-            <label for="password"><b>Password</b></label>
-            <input type="password" placeholder="Enter Password" name="password" ng-model="password" id="password"
-                title="at least 8 or more characters" required>
+            <div class="form-group">
+                <label for="lastname">Lastname</label>
+                <input type="text" placeholder="Enter your last name" name="lastname" ng-model="lastname" required>
+            </div>
 
-            <button type="submit" ng-click="signup()" ng-disabled="myForm.$invalid">Sign Up</button>
-        </div>
-        <div>
-            <p>Already have an account?<a href="#!/login" ng-click="go()">Log in</a></p>
-        </div>
+            <div class="form-group">
+                <label for="email">Email</label>
+                <input type="email" placeholder="Enter your email" name="email" ng-model="email" required>
+            </div>
 
-    </form>
+            <div class="form-group">
+                <label for="password">Password</label>
+                <input type="password" placeholder="Enter Password" name="password" ng-model="password" id="password"
+                    title="At least 8 or more characters" required>
+            </div>
+
+            <div class="form-group">
+                <button type="submit" ng-click="signup()" ng-disabled="myForm.$invalid">Sign Up</button>
+            </div>
+
+            <div class="form-footer">
+                <p>Already have an account? <a href="#!/login" ng-click="go()">Log in</a></p>
+            </div>
+        </form>
+    </div>
 </body>
 
 </html>

@@ -89,14 +89,14 @@ module.exports.forgotPassword = (req, res) => {
             } else {
                 response.success = true;
                 response.result = data;
-                const token = jwt.sign({ _id: data[0]._id }, secret, { expiresIn: 86400000 });
+                const token = jwt.sign({ _id: data._id }, secret, { expiresIn: process.env.token_expire_time });
                 const url = `${req.protocol}://${req.get('host')}/#!/resetPassword/${token}`;
 
                 console.log("url :: ", url)
                 sendMail.sendEmailFunction(url);
                 res.status(200).send([
                     {
-                        id: data[0]._id,
+                        id: data._id,
                         token: token,
                     },
                     {
