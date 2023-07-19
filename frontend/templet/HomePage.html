@@ -1,0 +1,148 @@
+<!--
+    File: HomePage.html
+    Overview: This is the main HTML file for the chat application.
+    Author: Bhupendra Singh
+-->
+
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Home Page</title>
+
+    <!-- CSS Styles -->
+    <style>
+        body {
+            background-color: #f5f5f5;
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+        }
+
+        .header {
+            background-color: #333333;
+            color: #ffffff;
+            padding: 10px;
+            text-align: center;
+        }
+
+        .main-content {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: calc(100vh - 40px);
+        }
+
+        .chat-container {
+            background-color: #ffffff;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+            padding: 30px;
+            border-radius: 4px;
+            width: 800px;
+            max-width: 100%;
+        }
+
+        .chat-title {
+            text-align: center;
+            font-size: 24px;
+            margin-bottom: 20px;
+            color: #333333;
+        }
+
+        .user-list {
+            display: flex;
+            flex-direction: column;
+            align-items: flex-start;
+            margin-bottom: 20px;
+        }
+
+        .user-list-item {
+            font-size: 16px;
+            margin-bottom: 5px;
+            color: #555555;
+        }
+
+        .message-container {
+            background-color: #f8f8f8;
+            padding: 10px;
+            margin-bottom: 20px;
+            max-height: 300px;
+            overflow-y: auto;
+        }
+
+        .message-item {
+            margin-bottom: 10px;
+            font-size: 14px;
+        }
+
+        .message-item.sender {
+            text-align: right;
+        }
+
+        .message-item.receiver {
+            text-align: left;
+        }
+
+        .message-input {
+            display: flex;
+            align-items: center;
+            margin-top: 20px;
+        }
+
+        .message-input input {
+            flex: 1;
+            height: 40px;
+            padding: 8px;
+            border: 1px solid #dddddd;
+            border-radius: 4px;
+        }
+
+        .message-input button {
+            height: 40px;
+            background-color: #4caf50;
+            color: #ffffff;
+            font-size: 16px;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            margin-left: 10px;
+        }
+
+        .message-input button:hover {
+            background-color: #45a049;
+        }
+    </style>
+</head>
+
+<body ng-controller="chatController">
+    <div class="header">
+        <h1>Chat App</h1>
+        <p>Welcome: {{currUserName}}</p>
+        <a href="#!/login" ng-click="logout()">Logout</a>
+    </div>
+
+    <div class="main-content">
+        <div class="chat-container">
+            <h2 class="chat-title">Welcome to Chat App</h2>
+
+            <div class="user-list">
+                <p class="user-list-item" ng-repeat="x in allUser" ng-click="person(x)" ng-show="currUserName != x.firstname">{{x.firstname}}</p>
+            </div>
+
+            <div class="message-container">
+                <div class="message-item" ng-repeat="chat in allUserArr" ng-class="{'sender': currUser == chat.senderId, 'receiver': currUser != chat.senderId}">
+                    {{chat.message}}
+                </div>
+            </div>
+
+            <div class="message-input">
+                <input type="text" ng-model="message" placeholder="Type your message">
+                <button type="submit" ng-click="addMessage()">Send</button>
+            </div>
+        </div>
+    </div>
+</body>
+
+</html>
