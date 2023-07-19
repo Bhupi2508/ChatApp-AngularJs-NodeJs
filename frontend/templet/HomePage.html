@@ -11,8 +11,6 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Home Page</title>
-
-    <!-- CSS Styles -->
     <style>
         body {
             background-color: #f5f5f5;
@@ -22,67 +20,81 @@
         }
 
         .header {
-            background-color: #333333;
-            color: #ffffff;
+            background-color: darkgreen;
+            color: white;
             padding: 10px;
             text-align: center;
         }
 
-        .main-content {
+        ul {
+            list-style-type: none;
+            margin: 0;
+            padding: 0;
+            overflow: hidden;
+            background-color: darkgreen;
+        }
+
+        li {
+            float: left;
+            display: block;
+            color: white;
+            text-align: center;
+            padding: 14px 16px;
+            text-decoration: none;
+        }
+
+        a {
+            color: aliceblue;
+            text-decoration: none;
+        }
+
+        .container {
             display: flex;
-            justify-content: center;
-            align-items: center;
             height: calc(100vh - 40px);
         }
 
-        .chat-container {
+        .left-block {
+            width: 20%;
             background-color: #ffffff;
             box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-            padding: 30px;
-            border-radius: 4px;
-            width: 800px;
-            max-width: 100%;
-        }
-
-        .chat-title {
-            text-align: center;
-            font-size: 24px;
-            margin-bottom: 20px;
-            color: #333333;
-        }
-
-        .user-list {
-            display: flex;
-            flex-direction: column;
-            align-items: flex-start;
-            margin-bottom: 20px;
-        }
-
-        .user-list-item {
-            font-size: 16px;
-            margin-bottom: 5px;
-            color: #555555;
-        }
-
-        .message-container {
-            background-color: #f8f8f8;
-            padding: 10px;
-            margin-bottom: 20px;
-            max-height: 300px;
+            padding: 20px;
             overflow-y: auto;
         }
 
-        .message-item {
+        .user-list {
+            font-size: 16px;
             margin-bottom: 10px;
-            font-size: 14px;
+            padding: 10px;
+            cursor: pointer;
+            background-color: #f0f0f0;
+            border-radius: 4px;
         }
 
-        .message-item.sender {
-            text-align: right;
+        .user-list:hover {
+            background-color: #e0e0e0;
         }
 
-        .message-item.receiver {
-            text-align: left;
+        .chat-area {
+            flex: 1;
+            background-color: #f8f8f8;
+            padding: 20px;
+            overflow-y: auto;
+        }
+
+        .chat-message {
+            margin-bottom: 10px;
+            padding: 10px;
+            border-radius: 4px;
+        }
+
+        .chat-message.sender {
+            background-color: #e2f1ff;
+            align-self: flex-end;
+        }
+
+        .chat-message.receiver {
+            background-color: #f3f3f3;
+            align-self: flex-start;
         }
 
         .message-input {
@@ -119,29 +131,32 @@
 <body ng-controller="chatController">
     <div class="header">
         <h1>Chat App</h1>
-        <p>Welcome: {{currUserName}}</p>
-        <a href="#!/login" ng-click="logout()">Logout</a>
+        <ul>
+            <li><a href="#!/homePage">Home</a></li>
+            <li>Welcome: {{currUserName}}</li>
+            <li><a ng-click="logout()">Logout</a></li>
+        </ul>
     </div>
 
-    <div class="main-content">
-        <div class="chat-container">
-            <h2 class="chat-title">Welcome to Chat App</h2>
-
-            <div class="user-list">
-                <p class="user-list-item" ng-repeat="x in allUser" ng-click="person(x)" ng-show="currUserName != x.firstname">{{x.firstname}}</p>
-            </div>
-
-            <div class="message-container">
-                <div class="message-item" ng-repeat="chat in allUserArr" ng-class="{'sender': currUser == chat.senderId, 'receiver': currUser != chat.senderId}">
-                    {{chat.message}}
-                </div>
-            </div>
-
-            <div class="message-input">
-                <input type="text" ng-model="message" placeholder="Type your message">
-                <button type="submit" ng-click="addMessage()">Send</button>
+    <div class="container">
+        <div class="left-block">
+            <h2>User List</h2>
+            <div class="user-list" ng-repeat="x in allUser" ng-click="person(x)" ng-show="currUserName != x.firstname">
+                {{x.firstname}}
             </div>
         </div>
+
+        <div class="chat-area">
+            <h2>Chat Messages</h2>
+            <div class="chat-message" ng-repeat="chat in allUserArr" ng-class="{'sender': chat.senderId === currUser, 'receiver': chat.receiverId === currUser}">
+                {{chat.message}}
+            </div>
+        </div>
+    </div>
+
+    <div class="message-input">
+        <input type="text" ng-model="message" placeholder="Type your message">
+        <button type="submit" ng-click="addMessage()">Send</button>
     </div>
 </body>
 
