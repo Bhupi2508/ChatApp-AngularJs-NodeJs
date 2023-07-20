@@ -90,6 +90,12 @@
             transition: .3s ease;
         }
 
+        /* Add this CSS for the selected-row class */
+        .selected-row {
+            background-color: gainsboro;
+            /* Choose your desired background color here */
+        }
+
         .friend-drawer--grey {
             background: #eee;
         }
@@ -292,22 +298,24 @@
                     <i class="material-icons">search</i>
                     <input placeholder="Search here" type="text" ng-model="searchText" ng-change="search()"
                         ng-model-options="{ debounce: 500 }">
-                    <div class="search-results" ng-if="searchResults.searchData.length > 0">
-                        <ul>
-                            <li ng-repeat="result in searchResults.searchData"
-                                ng-show="currUserName != result.firstname">
-                                {{ result.firstname }} {{ result.lastname }}
-                                <button class="btn btn-primary" ng-click="person(result)">Show Details</button>
-                            </li>
-                        </ul>
-                    </div>
+                </div>
+                <div class="search-results" ng-if="searchResults.searchData.length > 0">
+                    <ul>
+                        <li ng-repeat="result in searchResults.searchData"
+                            ng-show="currUserName != result.firstname">
+                            <button class="btn btn-primary" ng-click="person(result)">
+                                <span ng-bind="result.firstname + ' ' + result.lastname"></span>
+                            </button>
+                        </li>
+
+                    </ul>
                 </div>
             </div>
 
 
             <!-- Inside the ng-repeat for displaying user list -->
             <div class="friend-drawer friend-drawer--onhover" ng-repeat="x in allUser" ng-click="person(x)"
-                ng-show="currUserName != x.firstname">
+                ng-show="currUserName != x.firstname" ng-class="{ 'selected-row': receiverUserName === x.firstname }">
                 <div class="profile-image">
                     {{ x.firstname.charAt(0).toUpperCase() }}
                 </div>
