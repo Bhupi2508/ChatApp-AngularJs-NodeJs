@@ -72,18 +72,53 @@ app.controller('chatController', function ($scope, SocketService, $state, chatSe
 
     $scope.userMsg();
 
-
     // Function to format time in "05:25 pm" format
-    $scope.formatTime = function (timeString) {
+    $scope.formatTime = function (timeString, module) {
+
+        // Parse the input timeString to a Date object
         const date = new Date(timeString);
-        const hours = date.getUTCHours();
-        const minutes = date.getUTCMinutes();
-        const meridian = hours >= 12 ? 'pm' : 'am';
+
+        // Get the user's local timezone offset (in minutes)
+        const userTimezoneOffset = date.getTimezoneOffset();
+
+        // Define the custom timezone offset (in minutes) to add to the date
+        // Here, we assume the offset is 5.30 hours (330 minutes)
+        const customTimezoneOffset = 330;
+
+        // Calculate the total timezone offset in minutes
+        // Add the custom timezone offset to the user's local offset
+        const totalTimezoneOffset = userTimezoneOffset + customTimezoneOffset;
+
+        // Create a new date by adding the total timezone offset
+        const adjustedDate = new Date(date.getTime() + totalTimezoneOffset * 60 * 1000);
+
+        // Get the adjusted hours, minutes, day, month, and year
+        const hours = adjustedDate.getHours();
+        const minutes = adjustedDate.getMinutes();
+        const day = adjustedDate.getDate();
+        const month = adjustedDate.getMonth() + 1; // Months are zero-based, so we add 1
+        const year = adjustedDate.getFullYear();
+
+        // Format the time and date
+        const meridian = hours >= 12 ? 'PM' : 'AM';
         const formattedHours = hours % 12 || 12;
         const formattedMinutes = String(minutes).padStart(2, '0');
 
-        return `${formattedHours}:${formattedMinutes} ${meridian}`;
+        // Combine the formatted time and date
+        const formattedDate = `${day.toString().padStart(2, '0')}-${month.toString().padStart(2, '0')}-${year}`;
+        const formattedTime = `${formattedHours}:${formattedMinutes} ${meridian}`;
+
+        if (module === "message") {
+            return `${formattedTime} ${formattedDate}`;
+        } else if (module === "userList") {
+            return `${formattedDate} ${formattedTime} `;
+        }
+
+        return `${formattedTime} ${formattedDate}`;
     };
+
+
+
 
     $scope.searchText = '';
 
@@ -126,4 +161,11 @@ app.controller('chatController', function ($scope, SocketService, $state, chatSe
     } catch (err) {
         console.log("Error in logging out");
     }
+
+    $scope.checkEnterKey = function (event) {
+        if (event.keyCode === 13) { // 13 is the key code for Enter key
+            // Call the addMessage() function when the Enter key is pressed
+            $scope.addMessage();
+        }
+    };
 });

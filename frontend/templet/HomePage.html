@@ -24,10 +24,6 @@
             height: calc(100vh - 60px);
         }
 
-        .no-gutters {
-            display: -webkit-box;
-        }
-
         /* Sidebar styles */
         .sidebar {
             width: 20%;
@@ -179,6 +175,17 @@
             animation: fadeIn 1s ease-in;
         }
 
+        .chat-timestamp {
+            font-size: 12px;
+            color: #888;
+            position: absolute;
+            /* bottom: 0; */
+            right: 0;
+            padding: 2px 5px;
+            /* background-color: #f2f2f2; */
+            border-radius: 4px;
+        }
+
         .chat-bubble:after {
             content: '';
             position: absolute;
@@ -277,6 +284,54 @@
             flex-direction: column;
             padding: 22px;
         }
+
+        /* Media queries for responsiveness */
+
+        /* For screens with a maximum width of 768px (e.g., tablets) */
+        @media screen and (max-width: 768px) {
+            .container {
+                flex-direction: column;
+                height: 100%;
+            }
+
+            .sidebar {
+                width: 100%;
+                height: auto;
+                order: 2;
+                padding: 10px;
+            }
+
+            .chat-area {
+                order: 1;
+                height: calc(100% - 60px);
+            }
+        }
+
+        /* For screens with a maximum width of 480px (e.g., mobile phones) */
+        @media screen and (max-width: 480px) {
+            .sidebar {
+                padding: 5px;
+            }
+
+            .profile-image {
+                font-size: 18px;
+                width: 40px;
+                height: 40px;
+            }
+
+            .text {
+                width: 60%;
+            }
+
+            .chat-area {
+                padding: 10px;
+            }
+
+            .chat-message.sender,
+            .chat-message.receiver {
+                width: 90%;
+            }
+        }
     </style>
 </head>
 
@@ -301,8 +356,7 @@
                 </div>
                 <div class="search-results" ng-if="searchResults.searchData.length > 0">
                     <ul>
-                        <li ng-repeat="result in searchResults.searchData"
-                            ng-show="currUserName != result.firstname">
+                        <li ng-repeat="result in searchResults.searchData" ng-show="currUserName != result.firstname">
                             <button class="btn btn-primary" ng-click="person(result)">
                                 <span ng-bind="result.firstname + ' ' + result.lastname"></span>
                             </button>
@@ -320,10 +374,11 @@
                     {{ x.firstname.charAt(0).toUpperCase() }}
                 </div>
                 <div class="text">
-                    <p class="text-muted">{{ x.firstname }}</p>
+                    <p class="text-muted">{{ x.firstname }} <span class="time text-muted small ng-binding" style="
+                        font-family: monospace">{{
+                            formatTime(x.createdAt, "userList") }}</span></p>
                     <h6>{{ x.firstname }}</h6>
                 </div>
-                <span class="time text-muted small">{{ formatTime(x.createdAt) }}</span>
             </div>
         </div>
 
@@ -343,22 +398,27 @@
             <div class="chat-msg">
                 <div class="chat-message" ng-repeat="chat in allUserArr"
                     ng-class="{'sender': chat.receiverId === currUser, 'receiver': chat.senderId === currUser}">
-                    <spnn>{{ formatTime(chat.createdAt) }}</spnn><br>
                     <div class="chat-bubble"
                         ng-class="{'chat-bubble--left': chat.receiverId === currUser, 'chat-bubble--right': chat.senderId === currUser}">
                         {{chat.message}}
+                        <div class="chat-timestamp">
+                            <span>{{ formatTime(chat.createdAt, "message") }}</span>
+                        </div>
                     </div>
                 </div>
+
             </div>
             <div class="chat-box-tray">
                 <i class="material-icons">sentiment_very_satisfied</i>
-                <input type="text" ng-model="message" placeholder="Type your message here...">
+                <input type="text" ng-model="message" placeholder="Type your message here..."
+                    ng-keypress="checkEnterKey($event)">
                 <i class="material-icons">mic</i>
                 <button style="font: message-box;" type="submit" ng-click="addMessage()">Send</button>
             </div>
+
         </div>
 
         <script src="https://cdnjs.cloudflare.com/ajax/libs/angular.js/1.8.2/angular.min.js"></script>
-</body>
+    </body>
 
 </html>

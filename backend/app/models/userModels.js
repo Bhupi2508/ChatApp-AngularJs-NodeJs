@@ -12,8 +12,10 @@ const userSchema = new mongoose.Schema({
     firstname: { type: String, required: [true, "First name is required"] },
     lastname: { type: String, required: [true, "Last name is required"] },
     email: { type: String, required: [true, "Email is required"] },
-    password: { type: String, required: [true, "Password is required"] }
-}, { timestamps: true });
+    password: { type: String, required: [true, "Password is required"] },
+    createdAt: { type: String },
+    updatedAt: { type: String }
+});
 
 // Create user model
 const User = mongoose.model('user', userSchema);
@@ -33,7 +35,9 @@ userModel.prototype.signup = (body, callback) => {
             firstname: body.firstname,
             lastname: body.lastname,
             email: body.email,
-            password: bcrypt.hashSync(body.password, salt)
+            password: bcrypt.hashSync(body.password, salt),
+            createdAt: new Date().toISOString(), // Set createdAt to current timestamp in ISO 8601 format
+            updatedAt: new Date().toISOString() // Set updatedAt to current timestamp in ISO 8601 format
         });
         newUser.save((err, result) => {
             if (err) return callback(err);
