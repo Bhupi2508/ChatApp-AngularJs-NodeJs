@@ -13,11 +13,10 @@ module.exports.signup = (req, res) => {
     req.checkBody('firstname', 'First name is not valid').isLength({ min: 3 }).isAlpha();
     req.checkBody('lastname', 'Last name is not valid').isLength({ min: 3 }).isAlpha();
     req.checkBody('email', 'Email is not valid').isEmail();
-    req.checkBody('password', 'Password is not valid').isLength({ min: 4 }).equals(req.body.password);
+    req.checkBody('password', 'Password is not valid').isLength({ min: 6 }).equals(req.body.password);
 
     const errors = req.validationErrors();
     const response = {};
-
     if (errors) {
         response.success = false;
         response.error = errors;
@@ -42,7 +41,7 @@ module.exports.signup = (req, res) => {
 // User login
 module.exports.login = (req, res) => {
     req.checkBody('email', 'Email is not valid').isEmail();
-    req.checkBody('password', 'Password is not valid').isLength({ min: 4 });
+    req.checkBody('password', 'Password is not valid').isLength({ min: 6 });
 
     const secret = process.env.secret;
     const errors = req.validationErrors();
