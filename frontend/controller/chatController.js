@@ -7,6 +7,9 @@
 app.controller('chatController', function ($scope, SocketService, $state, chatServices) {
     $scope.message = "";
     $scope.allUserArr = [];
+    $scope.searchResults = [];
+    $scope.showPopup = false;
+    $scope.selectedResult = '';
     $scope.currUserName = localStorage.getItem('name');
     $scope.currUser = localStorage.getItem('userid');
     $scope.receiverName = localStorage.getItem('rusername');
@@ -46,15 +49,21 @@ app.controller('chatController', function ($scope, SocketService, $state, chatSe
 
     $scope.getAllUser();
 
-    $scope.person = function (userData) {
-        console.log(":::::::::::::::::::::::::::: ", userData)
-        $scope.allUserArr = '';
-        localStorage.setItem('rusername', userData.firstname);
-        localStorage.setItem('ruserId', userData._id);
+    try {
+        $scope.person = function (userData) {
+            console.log(":::::::::::::::::::::::::::: ", userData)
+            $scope.allUserArr = '';
+            localStorage.setItem('rusername', userData.firstname);
+            localStorage.setItem('ruserId', userData._id);
 
-        $scope.receiverUserName = localStorage.getItem('rusername');
-        $scope.userMsg();
-    };
+            $scope.receiverUserName = localStorage.getItem('rusername');
+            $scope.userMsg();
+            $scope.searchResults = []
+            $scope.searchText = '';
+        };
+    } catch (err) {
+        console.log("Error finding message");
+    }
 
     $scope.userMsg = function () {
         console.log("Function calling....");
@@ -75,6 +84,22 @@ app.controller('chatController', function ($scope, SocketService, $state, chatSe
 
         return `${formattedHours}:${formattedMinutes} ${meridian}`;
     };
+
+    $scope.searchText = '';
+
+    try {
+        $scope.search = function () {
+            if ($scope.searchText.length >= 3) {
+                chatServices.searchUser($scope, baseUrl);
+                console.log("searchRscopeesults ::: ", $scope)
+            } else {
+                // If search text is less than 3 characters, clear the search results
+                $scope.searchResults = [];
+            }
+        };
+    } catch (err) {
+        console.log("Error searching users");
+    }
 
     try {
         $scope.addMessage = function () {

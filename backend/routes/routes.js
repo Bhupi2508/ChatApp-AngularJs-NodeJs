@@ -17,5 +17,6 @@ router.post('/resetPassword', authMiddleware.auth, userController.resetPassword)
 router.post('/addMessage', chatController.addMessage);
 router.get('/getAllUser', authMiddleware.auth, userController.getAllUser);
 router.get('/userMsg', chatController.userMsg);
+router.post('/searchUser', userController.searchUser);
 
 module.exports = router;

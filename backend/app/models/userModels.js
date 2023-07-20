@@ -94,4 +94,22 @@ userModel.prototype.getAllUser = (req, callback) => {
     });
 };
 
+// Forgot password
+userModel.prototype.searchUser = (body, callback) => {
+    const searchName = body.searchName;
+    User.find(
+        {
+            $or: [
+                { firstname: { $regex: searchName, $options: 'i' } },
+                { lastname: { $regex: searchName, $options: 'i' } }
+            ]
+        },
+        (err, data) => {
+            if (err) return callback(err);
+            if (data) return callback(null, data);
+            return callback("Invalid User");
+        }
+    );
+};
+
 module.exports = new userModel();

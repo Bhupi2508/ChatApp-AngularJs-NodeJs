@@ -284,12 +284,27 @@
                 </div>
                 {{ currUserName }}
             </h2>
+
+
+            <!-- Your search bar HTML code -->
             <div class="search-box">
                 <div class="input-wrapper">
                     <i class="material-icons">search</i>
-                    <input placeholder="Search here" type="text">
+                    <input placeholder="Search here" type="text" ng-model="searchText" ng-change="search()"
+                        ng-model-options="{ debounce: 500 }">
+                    <div class="search-results" ng-if="searchResults.searchData.length > 0">
+                        <ul>
+                            <li ng-repeat="result in searchResults.searchData"
+                                ng-show="currUserName != result.firstname">
+                                {{ result.firstname }} {{ result.lastname }}
+                                <button class="btn btn-primary" ng-click="person(result)">Show Details</button>
+                            </li>
+                        </ul>
+                    </div>
                 </div>
             </div>
+
+
             <!-- Inside the ng-repeat for displaying user list -->
             <div class="friend-drawer friend-drawer--onhover" ng-repeat="x in allUser" ng-click="person(x)"
                 ng-show="currUserName != x.firstname">

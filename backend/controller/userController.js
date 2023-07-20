@@ -140,3 +140,19 @@ module.exports.getAllUser = (req, res) => {
         }
     });
 };
+
+// Search User
+module.exports.searchUser = (req, res) => {
+    const response = {};
+
+    userService.searchUser(req.body, (err, data) => {
+        if (err) {
+            return res.status(500).send({
+                message: err
+            });
+        } else {
+            response.success = true;
+            res.status(200).send({ searchData: data });
+        }
+    });
+};

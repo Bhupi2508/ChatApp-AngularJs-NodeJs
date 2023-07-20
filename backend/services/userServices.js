@@ -77,3 +77,15 @@ exports.getAllUser = (req, callback) => {
     }
   });
 };
+
+// Search users
+exports.searchUser = (req, callback) => {
+  // Send data to model and callback from there and here
+  userModel.searchUser(req, (err, data) => {
+    if (err) {
+      return callback(err);
+    } else {
+      return callback(null, data);
+    }
+  });
+};

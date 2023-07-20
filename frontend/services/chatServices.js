@@ -95,4 +95,43 @@ app.service('chatServices', function ($http) {
         console.log("Error occurred while getting messages:", err);
     }
 
+    try {
+        this.searchUser = function ($scope) {
+            console.log("::::::::::::::::::::: ", $scope.searchText)
+            const searchName = $scope.searchText
+            var usertoken = localStorage.getItem('token');
+            $http({
+                /*
+                GET request to fetch user messages
+                */
+                method: 'POST',
+                url: baseUrl + '/searchUser',
+                data: { searchName },
+                headers: {
+                    'token': usertoken,
+                    'Content-Type': 'application/json' // Set the Content-Type header for POST requests
+                  }
+            }).then(
+                /*
+                Success callback function
+                */
+                function successCallback(response) {
+                    console.log("Response:", response);
+                    console.log("Response data:", response.data);
+
+                    $scope.searchResults = response.data;
+                },
+                /*
+                Error callback function
+                */
+                function errorCallback(response) {
+                    console.log("Failed to search user");
+                    console.log("Error:", response);
+                }
+            );
+        }
+    } catch (err) {
+        console.log("Error occurred while searching users:", err);
+    }
+
 });
