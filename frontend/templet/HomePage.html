@@ -1,59 +1,35 @@
-<!--
-    File: HomePage.html
-    Overview: This is the main HTML file for the chat application.
-    Author: Bhupendra Singh
--->
-
 <!DOCTYPE html>
 <html lang="en">
 
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Home Page</title>
+    <title>Chat App</title>
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
     <style>
         body {
-            background-color: #f5f5f5;
-            font-family: Arial, sans-serif;
+            background-color: #3498db;
+            -webkit-font-smoothing: antialiased;
+            -moz-osx-font-smoothing: grayscale;
+            text-rendering: optimizeLegibility;
             margin: 0;
-            padding: 0;
-        }
-
-        .header {
-            background-color: darkgreen;
-            color: white;
-            padding: 10px;
-            text-align: center;
-        }
-
-        ul {
-            list-style-type: none;
-            margin: 0;
-            padding: 0;
-            overflow: hidden;
-            background-color: darkgreen;
-        }
-
-        li {
-            float: left;
-            display: block;
-            color: white;
-            text-align: center;
-            padding: 14px 16px;
-            text-decoration: none;
-        }
-
-        a {
-            color: aliceblue;
-            text-decoration: none;
         }
 
         .container {
+            margin: 20px auto;
+            background: #fff;
+            padding: 0px;
+            border-radius: 7px;
             display: flex;
-            height: calc(100vh - 40px);
+            height: calc(100vh - 60px);
         }
 
-        .left-block {
+        .no-gutters {
+            display: -webkit-box;
+        }
+
+        /* Sidebar styles */
+        .sidebar {
             width: 20%;
             background-color: #ffffff;
             box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
@@ -61,19 +37,105 @@
             overflow-y: auto;
         }
 
-        .user-list {
-            font-size: 16px;
-            margin-bottom: 10px;
-            padding: 10px;
+        .profile-image {
+            width: 60px;
+            height: 50px;
+            border-radius: 40px;
+            background-color: #74b9ff;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 24px;
+            color: #fff;
+            font-weight: bold;
+        }
+
+        .search-box {
+            background: #fafafa;
+            padding: 10px 13px;
+        }
+
+        .input-wrapper {
+            background: #fff;
+            border-radius: 40px;
+        }
+
+        .input-wrapper i {
+            color: grey;
+            margin-left: 7px;
+            vertical-align: middle;
+        }
+
+        input {
+            border: none;
+            border-radius: 30px;
+            width: 80%;
+        }
+
+        input::placeholder {
+            color: #e3e3e3;
+            font-weight: 300;
+            margin-left: 20px;
+        }
+
+        input:focus {
+            outline: none;
+        }
+
+        .friend-drawer {
+            padding: 10px 15px;
+            display: flex;
+            vertical-align: baseline;
+            background: #fff;
+            transition: .3s ease;
+        }
+
+        .friend-drawer--grey {
+            background: #eee;
+        }
+
+        .friend-drawer .text {
+            margin-left: 12px;
+            width: 70%;
+        }
+
+        .friend-drawer .text h6 {
+            margin-top: 0px;
+            margin-bottom: 0;
+        }
+
+        .friend-drawer .text p {
+            margin: 0;
+        }
+
+        .friend-drawer .time {
+            color: grey;
+        }
+
+        .friend-drawer--onhover:hover {
+            background: #74b9ff;
             cursor: pointer;
-            background-color: #f0f0f0;
-            border-radius: 4px;
         }
 
-        .user-list:hover {
-            background-color: #e0e0e0;
+        .friend-drawer--onhover:hover p,
+        .friend-drawer--onhover:hover h6,
+        .friend-drawer--onhover:hover .time {
+            color: #fff !important;
         }
 
+        .friend-drawer .text h6 {
+            margin-top: 5px;
+            margin-bottom: 0;
+            font-size: smaller;
+            font-weight: normal;
+        }
+
+        hr {
+            margin: 5px auto;
+            width: 60%;
+        }
+
+        /* Chat area styles */
         .chat-area {
             flex: 1;
             background-color: #f8f8f8;
@@ -97,67 +159,169 @@
             align-self: flex-start;
         }
 
-        .message-input {
+        /* Chat bubble styles */
+        .chat-bubble {
+            padding: 10px 14px;
+            background: #eee;
+            /* margin: 10px 30px; */
+            border-radius: 9px;
+            position: relative;
+            animation: fadeIn 1s ease-in;
+        }
+
+        .chat-bubble:after {
+            content: '';
+            position: absolute;
+            top: 50%;
+            width: 0;
+            height: 0;
+            border: 20px solid transparent;
+            border-bottom: 0;
+            margin-top: -10px;
+        }
+
+        .chat-bubble--left:after {
+            left: 0;
+            border-right-color: #eee;
+            border-left: 0;
+            margin-left: -20px;
+        }
+
+        .chat-bubble--right:after {
+            right: 0;
+            border-left-color: #74b9ff;
+            border-right: 0;
+            margin-right: -20px;
+        }
+
+        /* Chat box tray styles */
+        .chat-box-tray {
+            background: #eee;
             display: flex;
+            align-items: baseline;
+            padding: 10px 15px;
             align-items: center;
-            margin-top: 20px;
+            margin-top: 19px;
+            bottom: 0;
+            position: sticky;
         }
 
-        .message-input input {
-            flex: 1;
-            height: 40px;
-            padding: 8px;
-            border: 1px solid #dddddd;
-            border-radius: 4px;
+        .chat-box-tray input {
+            margin: 0 10px;
+            padding: 6px 2px;
         }
 
-        .message-input button {
-            height: 40px;
-            background-color: #4caf50;
-            color: #ffffff;
-            font-size: 16px;
-            border: none;
-            border-radius: 4px;
-            cursor: pointer;
-            margin-left: 10px;
+        .chat-box-tray i {
+            color: grey;
+            font-size: 30px;
+            vertical-align: middle;
         }
 
-        .message-input button:hover {
-            background-color: #45a049;
+        .chat-box-tray i:last-of-type {
+            margin-left: 25px;
+        }
+
+        @keyframes fadeIn {
+            0% {
+                opacity: 0;
+            }
+
+            100% {
+                opacity: 1;
+            }
+        }
+
+        .curr-user {
+            display: inline-flex;
+            flex-direction: row;
+            align-items: center;
+            justify-content: space-evenly;
+            flex-wrap: nowrap;
+            width: auto;
+        }
+
+        .chat-logout {
+            display: flex;
+            justify-content: space-between;
+            position: inherit;
+            flex-direction: row;
+            width: -webkit-fill-available;
+            align-items: center;
+        }
+
+        .user-logout {
+            font-size: 24px;
+            color: black;
+            font-weight: bold;
         }
     </style>
 </head>
 
-<body ng-controller="chatController">
-    <div class="header">
-        <h1>Chat App</h1>
-        <ul>
-            <li><a href="#!/homePage">Home</a></li>
-            <li>Welcome: {{currUserName}}</li>
-            <li><a ng-click="logout()">Logout</a></li>
-        </ul>
-    </div>
-
+<body ng-app="chatApp" ng-controller="chatController">
     <div class="container">
-        <div class="left-block">
-            <h2>User List</h2>
-            <div class="user-list" ng-repeat="x in allUser" ng-click="person(x)" ng-show="currUserName != x.firstname">
-                {{x.firstname}}
+        <div class="sidebar">
+            <h2 class="curr-user">
+                <!-- Display the current user's profile icon -->
+                <div class="profile-image">
+                    {{ currUserName.charAt(0).toUpperCase() }}
+                </div>
+                {{ currUserName }}
+            </h2>
+            <div class="search-box">
+                <div class="input-wrapper">
+                    <i class="material-icons">search</i>
+                    <input placeholder="Search here" type="text">
+                </div>
+            </div>
+            <!-- Inside the ng-repeat for displaying user list -->
+            <div class="friend-drawer friend-drawer--onhover" ng-repeat="x in allUser" ng-click="person(x)"
+                ng-show="currUserName != x.firstname">
+                <div class="profile-image">
+                    {{ x.firstname.charAt(0).toUpperCase() }}
+                </div>
+                <div class="text">
+                    <p class="text-muted">{{ x.firstname }}</p>
+                    <h6>{{ x.firstname }}</h6>
+                </div>
+                <span class="time text-muted small">{{ formatTime(x.createdAt) }}</span>
             </div>
         </div>
+
 
         <div class="chat-area">
-            <h2>Chat Messages</h2>
-            <div class="chat-message" ng-repeat="chat in allUserArr" ng-class="{'sender': chat.senderId === currUser, 'receiver': chat.receiverId === currUser}">
-                {{chat.message}}
+
+            <div class="chat-logout">
+                <h2 class="curr-user">
+                    <!-- Display the current user's profile icon -->
+                    <div class="profile-image">
+                        {{ receiverUserName.charAt(0).toUpperCase() }}
+                    </div>
+                    {{ receiverUserName}}'s Chat
+                </h2>
+                <div class="user-logout"><a href="#!/login" ng-click="logout()">Logout</a></div>
+            </div>
+            <div>
+                <div class="chat-message" ng-repeat="chat in allUserArr"
+                    ng-class="{'sender': chat.senderId === currUser, 'receiver': chat.receiverId === currUser}">
+                    <div class="chat-bubble"
+                        ng-class="{'chat-bubble--left': chat.senderId === currUser, 'chat-bubble--right': chat.receiverId === currUser}">
+                        {{chat.message}}
+                        <spnn>{{ formatTime(chat.createdAt) }}</spnn>
+                    </div>
+                </div>
+            </div>
+            <div class="chat-box-tray">
+                <i class="material-icons">sentiment_very_satisfied</i>
+                <input type="text" ng-model="message" placeholder="Type your message here...">
+                <i class="material-icons">mic</i>
+                <button class="material-icons" type="submit" ng-click="addMessage()">Send</button>
             </div>
         </div>
-    </div>
 
-    <div class="message-input">
-        <input type="text" ng-model="message" placeholder="Type your message">
-        <button type="submit" ng-click="addMessage()">Send</button>
-    </div>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/angular.js/1.8.2/angular.min.js"></script>
+        <script>
+        // The AngularJS app and controller code will be the same as before.
+        </script>
 </body>
 
 </html>

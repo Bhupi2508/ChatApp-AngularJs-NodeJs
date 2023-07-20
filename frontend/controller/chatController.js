@@ -11,6 +11,7 @@ app.controller('chatController', function ($scope, SocketService, $state, chatSe
     $scope.currUser = localStorage.getItem('userid');
     $scope.receiverName = localStorage.getItem('rusername');
     $scope.receiverId = localStorage.getItem('ruserId');
+    $scope.receiverUserName = localStorage.getItem('rusername');
 
     var token = localStorage.getItem("token");
     console.log("token: ", token);
@@ -46,6 +47,7 @@ app.controller('chatController', function ($scope, SocketService, $state, chatSe
     $scope.getAllUser();
 
     $scope.person = function (userData) {
+        console.log(":::::::::::::::::::::::::::: ", userData)
         $scope.allUserArr = '';
         localStorage.setItem('rusername', userData.firstname);
         localStorage.setItem('ruserId', userData._id);
@@ -60,6 +62,19 @@ app.controller('chatController', function ($scope, SocketService, $state, chatSe
     };
 
     $scope.userMsg();
+
+
+    // Function to format time in "05:25 pm" format
+    $scope.formatTime = function (timeString) {
+        const date = new Date(timeString);
+        const hours = date.getUTCHours();
+        const minutes = date.getUTCMinutes();
+        const meridian = hours >= 12 ? 'pm' : 'am';
+        const formattedHours = hours % 12 || 12;
+        const formattedMinutes = String(minutes).padStart(2, '0');
+
+        return `${formattedHours}:${formattedMinutes} ${meridian}`;
+    };
 
     try {
         $scope.addMessage = function () {

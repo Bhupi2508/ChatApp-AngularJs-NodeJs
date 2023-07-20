@@ -59,9 +59,7 @@ app.service('chatServices', function ($http) {
                 */
                 function successCallback(response) {
                     console.log("Response:", response);
-                    console.log("Response data message:", response.data.message);
                     console.log("Response data:", response.data);
-                    console.log("Message:", message);
                     console.log("Response data result:", response.data.result);
                     console.log("Response data result length:", response.data.result.length);
 
