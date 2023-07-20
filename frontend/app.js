@@ -67,8 +67,23 @@ Connect to the server using socket.io
 app.service('SocketService', ['socketFactory', function SocketService(socketFactory) {
     var currentHost = window.location.host;
     var socketUrl = 'http://' + currentHost;
-    
+
     return socketFactory({
         ioSocket: io.connect(socketUrl)
     });
 }]);
+
+// Run block to handle the keydown event
+app.run(function () {
+    document.onkeydown = function (e) {
+        if (e.keyCode === 123) {
+            return false;
+        } else if (e.ctrlKey && e.shiftKey && e.keyCode === 'I'.charCodeAt(0)) {
+            return false;
+        } else if (e.ctrlKey && e.shiftKey && e.keyCode === 'J'.charCodeAt(0)) {
+            return false;
+        } else if (e.ctrlKey && e.keyCode && e.keyCode === 'U'.charCodeAt(0)) {
+            return false;
+        }
+    };
+});

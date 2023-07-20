@@ -139,7 +139,7 @@
         .chat-area {
             flex: 1;
             background-color: #f8f8f8;
-            padding: 20px;
+            /* padding: 20px; */
             overflow-y: auto;
         }
 
@@ -150,19 +150,23 @@
         }
 
         .chat-message.sender {
-            background-color: #e2f1ff;
-            align-self: flex-end;
+            background-color: white;
+            align-self: flex-start;
+            line-break: anywhere;
+            width: 45%;
         }
 
         .chat-message.receiver {
-            background-color: #f3f3f3;
-            align-self: flex-start;
+            background-color: lightgreen;
+            align-self: flex-end;
+            line-break: anywhere;
+            width: 45%;
         }
 
         /* Chat bubble styles */
         .chat-bubble {
             padding: 10px 14px;
-            background: #eee;
+            /* background: #eee; */
             /* margin: 10px 30px; */
             border-radius: 9px;
             position: relative;
@@ -182,16 +186,16 @@
 
         .chat-bubble--left:after {
             left: 0;
-            border-right-color: #eee;
+            border-right-color: white;
             border-left: 0;
-            margin-left: -20px;
+            margin-left: -25px;
         }
 
         .chat-bubble--right:after {
             right: 0;
-            border-left-color: #74b9ff;
+            border-left-color: lightgreen;
             border-right: 0;
-            margin-right: -20px;
+            margin-right: -25px;
         }
 
         /* Chat box tray styles */
@@ -204,11 +208,12 @@
             margin-top: 19px;
             bottom: 0;
             position: sticky;
+            /* margin-top: 319px; */
         }
 
         .chat-box-tray input {
-            margin: 0 10px;
-            padding: 6px 2px;
+            margin: 11px 10px;
+            padding: 12px 2px;
         }
 
         .chat-box-tray i {
@@ -218,7 +223,8 @@
         }
 
         .chat-box-tray i:last-of-type {
-            margin-left: 25px;
+            /* margin-left: 25px; */
+            margin-right: 12px;
         }
 
         @keyframes fadeIn {
@@ -243,21 +249,32 @@
         .chat-logout {
             display: flex;
             justify-content: space-between;
-            position: inherit;
+            position: fixed;
             flex-direction: row;
             width: -webkit-fill-available;
             align-items: center;
+            z-index: 10;
+            background-color: white;
+            top: 20px;
+            padding: 11px;
         }
 
         .user-logout {
             font-size: 24px;
             color: black;
             font-weight: bold;
+            padding: 20px;
+        }
+
+        .chat-msg {
+            display: flex;
+            flex-direction: column;
+            padding: 22px;
         }
     </style>
 </head>
 
-<body ng-app="chatApp" ng-controller="chatController">
+<body ng-app="chatApp" ng-controller="chatController" oncontextmenu="return false;">
     <div class="container">
         <div class="sidebar">
             <h2 class="curr-user">
@@ -300,13 +317,13 @@
                 </h2>
                 <div class="user-logout"><a href="#!/login" ng-click="logout()">Logout</a></div>
             </div>
-            <div>
+            <div class="chat-msg">
                 <div class="chat-message" ng-repeat="chat in allUserArr"
-                    ng-class="{'sender': chat.senderId === currUser, 'receiver': chat.receiverId === currUser}">
+                    ng-class="{'sender': chat.receiverId === currUser, 'receiver': chat.senderId === currUser}">
+                    <spnn>{{ formatTime(chat.createdAt) }}</spnn><br>
                     <div class="chat-bubble"
-                        ng-class="{'chat-bubble--left': chat.senderId === currUser, 'chat-bubble--right': chat.receiverId === currUser}">
+                        ng-class="{'chat-bubble--left': chat.receiverId === currUser, 'chat-bubble--right': chat.senderId === currUser}">
                         {{chat.message}}
-                        <spnn>{{ formatTime(chat.createdAt) }}</spnn>
                     </div>
                 </div>
             </div>
@@ -314,14 +331,11 @@
                 <i class="material-icons">sentiment_very_satisfied</i>
                 <input type="text" ng-model="message" placeholder="Type your message here...">
                 <i class="material-icons">mic</i>
-                <button class="material-icons" type="submit" ng-click="addMessage()">Send</button>
+                <button style="font: message-box;" type="submit" ng-click="addMessage()">Send</button>
             </div>
         </div>
 
         <script src="https://cdnjs.cloudflare.com/ajax/libs/angular.js/1.8.2/angular.min.js"></script>
-        <script>
-        // The AngularJS app and controller code will be the same as before.
-        </script>
 </body>
 
 </html>
