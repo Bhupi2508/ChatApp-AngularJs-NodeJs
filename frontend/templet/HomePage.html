@@ -22,6 +22,7 @@
             border-radius: 7px;
             display: flex;
             height: calc(100vh - 60px);
+            place-content: space-around;
         }
 
         /* Sidebar styles */
@@ -139,10 +140,18 @@
 
         /* Chat area styles */
         .chat-area {
-            flex: 1;
+            /* flex: 1;
+            background-color: #f8f8f8;
+            /* padding: 20px; 
+            overflow-y: auto; */
+            display: flex;
             background-color: #f8f8f8;
             /* padding: 20px; */
             overflow-y: auto;
+            flex-direction: column;
+            flex-wrap: nowrap;
+            justify-content: flex-end;
+            width: 73%;
         }
 
         .chat-message {
@@ -282,7 +291,9 @@
         .chat-msg {
             display: flex;
             flex-direction: column;
-            padding: 22px;
+            padding: 2%;
+            overflow: auto;
+            margin-top: 9%;
         }
 
         /* Media queries for responsiveness */
@@ -395,7 +406,7 @@
                 </h2>
                 <div class="user-logout"><a href="#!/login" ng-click="logout()">Logout</a></div>
             </div>
-            <div class="chat-msg">
+            <div class="chat-msg" id="messageBody">
                 <div class="chat-message" ng-repeat="chat in allUserArr"
                     ng-class="{'sender': chat.receiverId === currUser, 'receiver': chat.senderId === currUser}">
                     <div class="chat-bubble"
@@ -419,6 +430,6 @@
         </div>
 
         <script src="https://cdnjs.cloudflare.com/ajax/libs/angular.js/1.8.2/angular.min.js"></script>
-    </body>
+</body>
 
 </html>

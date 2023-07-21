@@ -4,7 +4,7 @@
  *  @Author : Bhupendra Singh
  ******************************************************************************/
 
-app.controller('chatController', function ($scope, SocketService, $state, chatServices) {
+app.controller('chatController', function ($scope, SocketService, $state, chatServices, $timeout) {
     $scope.message = "";
     $scope.allUserArr = [];
     $scope.searchResults = [];
@@ -136,19 +136,35 @@ app.controller('chatController', function ($scope, SocketService, $state, chatSe
         console.log("Error searching users");
     }
 
+
+    // Function to scroll to the bottom of the #messageBody div
+    function scrollToBottom() {
+        var objDiv = document.getElementById("messageBody");
+        objDiv.scrollTop = objDiv.scrollHeight;
+    }
+
+    // Watch for changes in the 'allUserArr' array and scroll to the bottom when it changes
+    $scope.$watch('allUserArr', function (newVal, oldVal) {
+        if (newVal !== oldVal) {
+            $timeout(scrollToBottom, 0);
+        }
+    }, true);
+
     try {
         $scope.addMessage = function () {
-            var msg = {
-                senderId: localStorage.getItem('userid'),
-                senderName: localStorage.getItem('name'),
-                receiverId: localStorage.getItem('ruserId'),
-                receiverName: localStorage.getItem('rusername'),
-                message: $scope.message
-            };
-            $scope.message = '';
+            if ($scope.message) {
+                var msg = {
+                    senderId: localStorage.getItem('userid'),
+                    senderName: localStorage.getItem('name'),
+                    receiverId: localStorage.getItem('ruserId'),
+                    receiverName: localStorage.getItem('rusername'),
+                    message: $scope.message
+                };
+                $scope.message = '';
 
-            SocketService.emit('createMessage', msg);
-        };
+                SocketService.emit('createMessage', msg);
+            };
+        }
     } catch (err) {
         console.log("Error in sending message to the receiver");
     }
