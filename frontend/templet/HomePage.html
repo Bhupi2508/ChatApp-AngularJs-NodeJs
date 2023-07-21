@@ -417,6 +417,7 @@
             <!-- Inside the ng-repeat for displaying user list -->
             <div class="friend-drawer friend-drawer--onhover" ng-repeat="x in allUser" ng-click="person(x)"
                 ng-show="currUserName != x.firstname" ng-class="{ 'selected-row': receiverUserName === x.firstname }">
+                jhvkk{{receiverUserName}}
                 <div class="profile-image">
                     {{ x.firstname.charAt(0).toUpperCase() }}
                 </div>
@@ -431,7 +432,6 @@
 
 
         <div class="chat-area">
-
             <div class="chat-logout">
                 <h2 class="curr-user">
                     <!-- Display the current user's profile icon -->

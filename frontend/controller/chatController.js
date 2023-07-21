@@ -38,6 +38,7 @@ app.controller('chatController', function ($scope, SocketService, $state, chatSe
                     console.log("allUserArr", $scope.allUserArr);
                 }
             }
+
         });
     } catch (err) {
         console.log("Error finding message");
@@ -116,9 +117,6 @@ app.controller('chatController', function ($scope, SocketService, $state, chatSe
 
         return `${formattedTime} ${formattedDate}`;
     };
-
-
-
 
     $scope.searchText = '';
 

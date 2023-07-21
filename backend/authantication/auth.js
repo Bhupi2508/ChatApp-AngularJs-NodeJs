@@ -21,6 +21,10 @@ const auth = (req, res, next) => {
     jwt.verify(token, secret, (err, decoded) => {
         if (err) {
             console.log("Error :: ", err);
+            if (err.name === "TokenExpiredError") {
+                // Token has expired
+                return res.status(401).send({ message: "Token has expired" });
+            }
             return res.status(401).send(response);
         } else {
             console.log("Decoded Data :: ", decoded);
@@ -40,6 +44,21 @@ const generateToken = (payload) => {
         token: token
     };
 };
+
+
+// Function to check if a JWT token has expired or not
+const isTokenExpired = (token, secret) => {
+    try {
+        // Verify the token and decode its payload
+        const decodedToken = jwt.verify(token, secret);
+
+        // Check the expiration time
+        return Date.now() >= decodedToken.exp * 1000;
+    } catch (error) {
+        // If there's an error, the token is either invalid or expired
+        return true;
+    }
+}
 
 module.exports = { auth, generateToken };
 

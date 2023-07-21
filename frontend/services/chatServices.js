@@ -33,6 +33,11 @@ app.service('chatServices', function ($http) {
                 function errorCallback(response) {
                     console.log("Failed to fetch user data");
                     console.log("Error:", response);
+                    if (response.data.message === "Token has expired") {
+                        localStorage.clear();
+                        // Redirect the user to the login page
+                        $window.location.href = '/login';
+                    }
                 }
             );
         }
@@ -58,11 +63,11 @@ app.service('chatServices', function ($http) {
                 Success callback function
                 */
                 function successCallback(response) {
-                    console.log("Response:", response);
-                    console.log("Response data:", response.data);
-                    console.log("Response data result:", response.data.result);
-                    console.log("Response data result length:", response.data.result.length);
+                    console.log("Response : ", response);
+                    console.log("Response data result : ", response.data.result);
+                    console.log("Response data result length : ", response.data.result.length);
 
+                    let lastAaaaValue = null;
                     for (let i = 0; i < response.data.result.length; i++) {
                         var a = response.data.result[i];
 
@@ -77,6 +82,17 @@ app.service('chatServices', function ($http) {
 
                             arr.push(a);
                         }
+                        if (localStorage.getItem('userid') !== a._id) {
+                            lastAaaaValue = a;
+                        }
+                    }
+
+                    if (localStorage.getItem('rusername') === null) {
+                        localStorage.setItem('rusername', lastAaaaValue.receiverName);
+                    }
+
+                    if (localStorage.getItem('ruserId') === null) {
+                        localStorage.setItem('ruserId', lastAaaaValue.receiverId);
                     }
 
                     $scope.allUserArr = arr;
@@ -110,7 +126,7 @@ app.service('chatServices', function ($http) {
                 headers: {
                     'token': usertoken,
                     'Content-Type': 'application/json' // Set the Content-Type header for POST requests
-                  }
+                }
             }).then(
                 /*
                 Success callback function
