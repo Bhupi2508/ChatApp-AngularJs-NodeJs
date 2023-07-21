@@ -25,7 +25,6 @@
             place-content: space-around;
         }
 
-        /* Sidebar styles */
         .sidebar {
             width: 20%;
             background-color: #ffffff;
@@ -87,10 +86,8 @@
             transition: .3s ease;
         }
 
-        /* Add this CSS for the selected-row class */
         .selected-row {
             background-color: gainsboro;
-            /* Choose your desired background color here */
         }
 
         .friend-drawer--grey {
@@ -138,15 +135,9 @@
             width: 60%;
         }
 
-        /* Chat area styles */
         .chat-area {
-            /* flex: 1;
-            background-color: #f8f8f8;
-            /* padding: 20px; 
-            overflow-y: auto; */
             display: flex;
             background-color: #f8f8f8;
-            /* padding: 20px; */
             overflow-y: auto;
             flex-direction: column;
             flex-wrap: nowrap;
@@ -174,11 +165,8 @@
             width: 45%;
         }
 
-        /* Chat bubble styles */
         .chat-bubble {
             padding: 10px 14px;
-            /* background: #eee; */
-            /* margin: 10px 30px; */
             border-radius: 9px;
             position: relative;
             animation: fadeIn 1s ease-in;
@@ -188,10 +176,8 @@
             font-size: 12px;
             color: #888;
             position: absolute;
-            /* bottom: 0; */
             right: 0;
             padding: 2px 5px;
-            /* background-color: #f2f2f2; */
             border-radius: 4px;
         }
 
@@ -220,7 +206,6 @@
             margin-right: -25px;
         }
 
-        /* Chat box tray styles */
         .chat-box-tray {
             background: #eee;
             display: flex;
@@ -230,7 +215,6 @@
             margin-top: 19px;
             bottom: 0;
             position: sticky;
-            /* margin-top: 319px; */
         }
 
         .chat-box-tray input {
@@ -245,7 +229,6 @@
         }
 
         .chat-box-tray i:last-of-type {
-            /* margin-left: 25px; */
             margin-right: 12px;
         }
 
@@ -282,10 +265,28 @@
         }
 
         .user-logout {
-            font-size: 24px;
-            color: black;
-            font-weight: bold;
-            padding: 20px;
+            display: inline-block;
+            font-size: 16px;
+            color: #ffffff;
+            background-color: #007bff;
+            padding: 10px 20px;
+            border-radius: 5px;
+            text-decoration: none;
+            transition: background-color 0.3s ease;
+            margin-right: 6px;
+        }
+
+        .user-logout a {
+            text-decoration: none;
+            color: #ffffff;
+        }
+
+        .user-logout:hover {
+            background-color: #0056b3;
+        }
+
+        .user-logout:active {
+            background-color: #003978;
         }
 
         .chat-msg {
@@ -297,9 +298,8 @@
         }
 
         /* Media queries for responsiveness */
-
-        /* For screens with a maximum width of 768px (e.g., tablets) */
-        @media screen and (max-width: 768px) {
+        /* For screens with a maximum width of 1024px (e.g., tablets) */
+        @media screen and (max-width: 1024px) {
             .container {
                 flex-direction: column;
                 height: 100%;
@@ -316,9 +316,34 @@
                 order: 1;
                 height: calc(100% - 60px);
             }
+
+            /* Additional tablet-specific styles (if needed) */
+            /* ... */
         }
 
-        /* For screens with a maximum width of 480px (e.g., mobile phones) */
+        /* For screens with a maximum width of 768px (e.g., small tablets and larger phones) */
+        @media screen and (max-width: 768px) {
+            .friend-drawer .text h6 {
+                font-size: 14px;
+                /* Decrease font size for better visibility */
+            }
+
+            .chat-message.sender,
+            .chat-message.receiver {
+                width: 70%;
+                /* Adjust message bubble width for better visibility */
+            }
+
+            .chat-box-tray input {
+                padding: 8px 2px;
+                /* Adjust input padding for better visibility */
+            }
+
+            /* Additional small tablet and larger phone-specific styles (if needed) */
+            /* ... */
+        }
+
+        /* For screens with a maximum width of 480px (e.g., most mobile phones) */
         @media screen and (max-width: 480px) {
             .sidebar {
                 padding: 5px;
@@ -342,6 +367,17 @@
             .chat-message.receiver {
                 width: 90%;
             }
+
+            .chat-area {
+                width: 96%;
+            }
+
+            .chat-msg {
+                margin-top: 20%;
+            }
+
+            /* Additional mobile-specific styles (if needed) */
+            /* ... */
         }
     </style>
 </head>
