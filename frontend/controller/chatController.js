@@ -26,20 +26,7 @@ app.controller('chatController', function ($scope, SocketService, $state, chatSe
     var baseUrl = window.location.origin;
 
     try {
-        SocketService.on('startMessage', (message) => {
-            if (
-                localStorage.getItem('userid') == message.senderId ||
-                (localStorage.getItem('userid') == message.receiverId && localStorage.getItem('ruserId') == message.senderId)
-            ) {
-                if ($scope.allUserArr === undefined) {
-                    $scope.allUserArr = message;
-                } else {
-                    $scope.allUserArr.push(message);
-                    console.log("allUserArr", $scope.allUserArr);
-                }
-            }
-
-        });
+        SocketService.on('startMessage', handleNewMessage);
     } catch (err) {
         console.log("Error finding message");
     }
@@ -68,7 +55,7 @@ app.controller('chatController', function ($scope, SocketService, $state, chatSe
 
     $scope.userMsg = function () {
         console.log("Function calling....");
-        chatServices.userMsg($scope, baseUrl);
+        chatServices.userMsg($scope, baseUrl, handleNewMessage);
     };
 
     $scope.userMsg();
@@ -182,4 +169,22 @@ app.controller('chatController', function ($scope, SocketService, $state, chatSe
             $scope.addMessage();
         }
     };
+
+    // Function to handle new incoming messages
+    function handleNewMessage(message) {
+        if (
+            localStorage.getItem('userid') == message.senderId ||
+            (localStorage.getItem('userid') == message.receiverId && localStorage.getItem('ruserId') == message.senderId)
+        ) {
+            $scope.allUserArr.push(message);
+
+            // Update last message details for the corresponding user
+            const userId = message.senderId === localStorage.getItem('userid') ? message.receiverId : message.senderId;
+            const index = $scope.allUser.findIndex(user => user._id === userId);
+            if (index !== -1) {
+                $scope.allUser[index].lastMessage = message.message;
+                $scope.allUser[index].lastMessageTime = message.createdAt;
+            }
+        }
+    }
 });

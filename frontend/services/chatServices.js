@@ -87,6 +87,7 @@ app.service('chatServices', function ($http) {
                         }
                     }
 
+                    console.log("::::::::::::::: ", lastAaaaValue)
                     if (localStorage.getItem('rusername') === null) {
                         localStorage.setItem('rusername', lastAaaaValue.receiverName);
                     }

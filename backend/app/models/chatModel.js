@@ -31,7 +31,7 @@ const chatSchema = new Schema({
 // Create a chatModel function and schema
 function chatModel() {}
 
-const Chat = mongoose.model('chatInfo :: ', chatSchema);
+const Chat = mongoose.model('chatMessages', chatSchema);
 
 try {
     chatModel.prototype.addMessage = (chatData, callback) => {

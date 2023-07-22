@@ -1,3 +1,9 @@
+<!--
+    File: HomePage.html
+    Overview: This is the main HTML file for the chat application.
+    Author: Bhupendra Singh
+-->
+
 <!DOCTYPE html>
 <html lang="en">
 
@@ -40,7 +46,6 @@
                 </div>
             </div>
 
-
             <!-- Inside the ng-repeat for displaying user list -->
             <div class="friend-drawer friend-drawer--onhover" ng-repeat="x in allUser" ng-click="person(x)"
                 ng-show="currUserName != x.firstname" ng-class="{ 'selected-row': receiverUserName === x.firstname }">
@@ -48,12 +53,12 @@
                     {{ x.firstname.charAt(0).toUpperCase() }}
                 </div>
                 <div class="text">
-                    <p class="text-muted">{{ x.firstname }} <span class="time text-muted small ng-binding" style="
-                        font-family: monospace">{{
-                            formatTime(x.createdAt, "userList") }}</span></p>
-                    <h6>{{ x.firstname }}</h6>
+                    <p class="text-muted">{{ x.firstname }} <span class="time text-muted small ng-binding"
+                            style="font-family: monospace">{{ formatTime(x.lastMessageTime, "userList") }}</span></p>
+                    <p class="last-message" ng-if="x.lastMessage">{{ x.lastMessage }}</p>
                 </div>
             </div>
+
         </div>
 
 
