@@ -5,150 +5,91 @@
  ******************************************************************************/
 
 app.service('chatServices', function ($http) {
-    try {
-        var baseUrl = window.location.origin;
-        console.log("baseUrl :: ", baseUrl);
+    var baseUrl = window.location.origin;
 
-        this.getAllUser = function ($scope, usertoken) {
-            $http({
-                /*
-                GET request to fetch user data
-                */
-                method: 'GET',
-                url: baseUrl + '/getAllUser',
-                headers: {
-                    'token': usertoken,
-                }
-            }).then(
-                /*
-                Success callback function
-                */
-                function successCallback(response) {
-                    console.log("All users data:", response.data.result);
-                    $scope.allUser = response.data.result;
-                },
-                /*
-                Error callback function
-                */
-                function errorCallback(response) {
-                    console.log("Failed to fetch user data");
-                    console.log("Error:", response);
-                    if (response.data.message === "Token has expired") {
-                        localStorage.clear();
-                        // Redirect the user to the login page
-                        $window.location.href = '/login';
-                    }
-                }
-            );
-        }
-    } catch (err) {
-        console.log("Error occurred while getting users:", err);
-    }
+    this.getAllUser = function (usertoken) {
+        return $http({
+            method: 'GET',
+            url: baseUrl + '/getAllUser',
+            headers: {
+                'token': usertoken,
+            }
+        }).then(function (response) {
+            console.log("All users data : ", response.data.result);
+            return response.data.result;
+        }).catch(function (error) {
+            console.log("Error occurred while getting users:", error);
+            return [];
+        });
+    };
 
-    try {
-        this.userMsg = function ($scope) {
-            var arr = [];
-            var usertoken = localStorage.getItem('token');
-            $http({
-                /*
-                GET request to fetch user messages
-                */
-                method: 'GET',
-                url: baseUrl + '/userMsg',
-                headers: {
-                    'token': usertoken,
-                }
-            }).then(
-                /*
-                Success callback function
-                */
-                function successCallback(response) {
-                    console.log("Response : ", response);
-                    console.log("Response data result : ", response.data.result);
-                    console.log("Response data result length : ", response.data.result.length);
+    this.userMsg = function () {
+        var arr = [];
+        var usertoken = localStorage.getItem('token');
+        return $http({
+            method: 'GET',
+            url: baseUrl + '/userMsg',
+            headers: {
+                'token': usertoken,
+            }
+        }).then(function (response) {
+            console.log("Response data : ", response.data);
 
-                    let lastAaaaValue = null;
-                    for (let i = 0; i < response.data.result.length; i++) {
-                        var a = response.data.result[i];
+            let lastAaaaValue = null;
+            for (let i = 0; i < response.data.result.length; i++) {
+                var a = response.data.result[i];
 
-                        if (
-                            (localStorage.getItem('userid') == a.senderId && localStorage.getItem('ruserId') == a.receiverId) ||
-                            (localStorage.getItem('userid') == a.receiverId && localStorage.getItem('ruserId') == a.senderId)
-                        ) {
-                            console.log("Local user:", localStorage.getItem('userid'));
-                            console.log("A user:", a.senderId);
-                            console.log("Local receiver id:", localStorage.getItem('ruserId'));
-                            console.log("Receiver id:", a.receiverId);
+                // if (
+                //     (localStorage.getItem('userid') == a.senderId && localStorage.getItem('ruserId') == a.receiverId) ||
+                //     (localStorage.getItem('userid') == a.receiverId && localStorage.getItem('ruserId') == a.senderId)
+                // ) {
+                console.log("Local user:", localStorage.getItem('userid'));
+                console.log("A user:", a.senderId);
+                console.log("Local receiver id:", localStorage.getItem('ruserId'));
+                console.log("Receiver id:", a.receiverId);
 
-                            arr.push(a);
-                        }
-                        if (localStorage.getItem('userid') !== a._id) {
-                            lastAaaaValue = a;
-                        }
-                    }
+                // arr.push(a);
+            }
+            if (localStorage.getItem('userid') !== a._id) {
+                lastAaaaValue = a;
+            }
+            // }
 
-                    console.log("::::::::::::::: ", lastAaaaValue)
-                    if (localStorage.getItem('rusername') === null) {
-                        localStorage.setItem('rusername', lastAaaaValue.receiverName);
-                    }
+            console.log("::::::::::::::: ", lastAaaaValue)
+            if (localStorage.getItem('rusername') === null) {
+                localStorage.setItem('rusername', lastAaaaValue.receiverName);
+            }
 
-                    if (localStorage.getItem('ruserId') === null) {
-                        localStorage.setItem('ruserId', lastAaaaValue.receiverId);
-                    }
+            if (localStorage.getItem('ruserId') === null) {
+                localStorage.setItem('ruserId', lastAaaaValue.receiverId);
+            }
 
-                    $scope.allUserArr = arr;
-                    console.log("User messages retrieved successfully:", arr);
-                },
-                /*
-                Error callback function
-                */
-                function errorCallback(response) {
-                    console.log("Failed to retrieve user messages");
-                    console.log("Error:", response);
-                }
-            );
-        }
-    } catch (err) {
-        console.log("Error occurred while getting messages:", err);
-    }
+            console.log("User messages retrieved successfully:", arr);
+            return response.data.result;
+        }).catch(function (error) {
+            console.log("Error occurred while getting messages:", error);
+            return [];
+        });
+    };
 
-    try {
-        this.searchUser = function ($scope) {
-            console.log("::::::::::::::::::::: ", $scope.searchText)
-            const searchName = $scope.searchText
-            var usertoken = localStorage.getItem('token');
-            $http({
-                /*
-                GET request to fetch user messages
-                */
-                method: 'POST',
-                url: baseUrl + '/searchUser',
-                data: { searchName },
-                headers: {
-                    'token': usertoken,
-                    'Content-Type': 'application/json' // Set the Content-Type header for POST requests
-                }
-            }).then(
-                /*
-                Success callback function
-                */
-                function successCallback(response) {
-                    console.log("Response:", response);
-                    console.log("Response data:", response.data);
-
-                    $scope.searchResults = response.data;
-                },
-                /*
-                Error callback function
-                */
-                function errorCallback(response) {
-                    console.log("Failed to search user");
-                    console.log("Error:", response);
-                }
-            );
-        }
-    } catch (err) {
-        console.log("Error occurred while searching users:", err);
-    }
-
+    this.searchUser = function (searchText) {
+        console.log("::::::::::::::::::::: ", searchText);
+        var usertoken = localStorage.getItem('token');
+        return $http({
+            method: 'POST',
+            url: baseUrl + '/searchUser',
+            data: { searchName: searchText },
+            headers: {
+                'token': usertoken,
+                'Content-Type': 'application/json'
+            }
+        }).then(function (response) {
+            console.log("Response:", response);
+            console.log("Response data:", response.data);
+            return response.data;
+        }).catch(function (error) {
+            console.log("Error occurred while searching users:", error);
+            return [];
+        });
+    };
 });

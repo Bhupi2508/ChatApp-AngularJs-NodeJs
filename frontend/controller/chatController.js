@@ -5,8 +5,12 @@
  ******************************************************************************/
 
 app.controller('chatController', function ($scope, SocketService, $state, chatServices, $timeout) {
+    var baseUrl = window.location.origin;
+    var token = localStorage.getItem("token");
+
     $scope.message = "";
     $scope.allUserArr = [];
+    $scope.allUserMsg = [];
     $scope.searchResults = [];
     $scope.showPopup = false;
     $scope.selectedResult = '';
@@ -16,31 +20,82 @@ app.controller('chatController', function ($scope, SocketService, $state, chatSe
     $scope.receiverId = localStorage.getItem('ruserId');
     $scope.receiverUserName = localStorage.getItem('rusername');
 
-    var token = localStorage.getItem("token");
-    console.log("token: ", token);
+    console.log("token : ", token);
 
     if (token === null) {
         $state.go('login');
     }
 
-    var baseUrl = window.location.origin;
-
     try {
         SocketService.on('startMessage', handleNewMessage);
     } catch (err) {
-        console.log("Error finding message");
+        console.log("Error finding message:", err);
     }
 
-    $scope.getAllUser = function () {
-        chatServices.getAllUser($scope, token, baseUrl);
-    };
+    try {
+        $scope.getAllUser = function () {
+            chatServices.getAllUser(token).then(function (users) {
+                $scope.allUser = users;
+                console.log("Users fetched:", users);
+                return chatServices.userMsg(); // Call userMsg after fetching users
+            }).then(function (userMessages) {
+                let array = [];
+                for (let i = 0; i < userMessages.length; i++) {
+                    var a = userMessages[i];
+                    if (
+                        (localStorage.getItem('userid') == a.senderId && localStorage.getItem('ruserId') == a.receiverId) ||
+                        (localStorage.getItem('userid') == a.receiverId && localStorage.getItem('ruserId') == a.senderId)
+                    ) {
+                        array.push(a);
+                    }
+                }
+                $scope.allUserArr = array;
+                // all msg
+                $scope.allUserMsg = userMessages
+                console.log("User messages fetched:", userMessages);
+                // Call the function to update last message details
+                updateLastMessageDetails();
+            }).catch(function (error) {
+                console.log("Error getting all users or user messages:", error);
+            });
+        };
+    } catch (err) {
+        console.log("Error getting all users:", err);
+    }
 
     $scope.getAllUser();
+
+    try {
+        $scope.userMsg = function () {
+            let arr = [];
+            chatServices.userMsg().then(function (userMessages) {
+                console.log("User messages fetched:", userMessages);
+                // $scope.allUserMsg = userMessages;
+                for (let i = 0; i < userMessages.length; i++) {
+                    var a = userMessages[i];
+                    if (
+                        (localStorage.getItem('userid') == a.senderId && localStorage.getItem('ruserId') == a.receiverId) ||
+                        (localStorage.getItem('userid') == a.receiverId && localStorage.getItem('ruserId') == a.senderId)
+                    ) {
+                        arr.push(a);
+                    }
+                }
+                $scope.allUserArr = arr;
+            }).catch(function (error) {
+                console.log("Error getting user messages:", error);
+            });
+        };
+    } catch (err) {
+        console.log("Error fetching user messages:", err);
+    }
+
+    $scope.userMsg();
 
     try {
         $scope.person = function (userData) {
             console.log(":::::::::::::::::::::::::::: ", userData)
             $scope.allUserArr = '';
+            $scope.allUserMsg = '';
             localStorage.setItem('rusername', userData.firstname);
             localStorage.setItem('ruserId', userData._id);
 
@@ -50,15 +105,8 @@ app.controller('chatController', function ($scope, SocketService, $state, chatSe
             $scope.searchText = '';
         };
     } catch (err) {
-        console.log("Error finding message");
+        console.log("Error setting user data:", err);
     }
-
-    $scope.userMsg = function () {
-        console.log("Function calling....");
-        chatServices.userMsg($scope, baseUrl, handleNewMessage);
-    };
-
-    $scope.userMsg();
 
     // Function to format time in "05:25 pm" format
     $scope.formatTime = function (timeString, module) {
@@ -111,16 +159,15 @@ app.controller('chatController', function ($scope, SocketService, $state, chatSe
         $scope.search = function () {
             if ($scope.searchText.length >= 3) {
                 chatServices.searchUser($scope, baseUrl);
-                console.log("searchRscopeesults ::: ", $scope)
+                console.log("searchResults ::: ", $scope)
             } else {
                 // If search text is less than 3 characters, clear the search results
                 $scope.searchResults = [];
             }
         };
     } catch (err) {
-        console.log("Error searching users");
+        console.log("Error searching users:", err);
     }
-
 
     // Function to scroll to the bottom of the #messageBody div
     function scrollToBottom() {
@@ -148,10 +195,10 @@ app.controller('chatController', function ($scope, SocketService, $state, chatSe
                 $scope.message = '';
 
                 SocketService.emit('createMessage', msg);
-            };
+            }
         }
     } catch (err) {
-        console.log("Error in sending message to the receiver");
+        console.log("Error in sending message to the receiver:", err);
     }
 
     try {
@@ -160,31 +207,93 @@ app.controller('chatController', function ($scope, SocketService, $state, chatSe
             $state.go('login');
         };
     } catch (err) {
-        console.log("Error in logging out");
+        console.log("Error in logging out:", err);
     }
 
     $scope.checkEnterKey = function (event) {
         if (event.keyCode === 13) { // 13 is the key code for Enter key
             // Call the addMessage() function when the Enter key is pressed
-            $scope.addMessage();
+            try {
+                $scope.addMessage();
+            } catch (err) {
+                console.log("Error adding message:", err);
+            }
         }
     };
 
     // Function to handle new incoming messages
     function handleNewMessage(message) {
-        if (
-            localStorage.getItem('userid') == message.senderId ||
-            (localStorage.getItem('userid') == message.receiverId && localStorage.getItem('ruserId') == message.senderId)
-        ) {
-            $scope.allUserArr.push(message);
+        let msg;
+        let time;
+        try {
+            if (
+                localStorage.getItem('userid') == message.senderId ||
+                (localStorage.getItem('userid') == message.receiverId && localStorage.getItem('ruserId') == message.senderId)
+            ) {
+                $scope.allUserArr.push(message);
 
-            // Update last message details for the corresponding user
-            const userId = message.senderId === localStorage.getItem('userid') ? message.receiverId : message.senderId;
-            const index = $scope.allUser.findIndex(user => user._id === userId);
-            if (index !== -1) {
-                $scope.allUser[index].lastMessage = message.message;
-                $scope.allUser[index].lastMessageTime = message.createdAt;
+                // Update last message details for the corresponding user
+                const userId = message.senderId === localStorage.getItem('userid') ? message.receiverId : message.senderId;
+                const index = $scope.allUser.findIndex(user => user._id === userId);
+                if (index !== -1) {
+                    $scope.allUser[index].lastMessage = message.message;
+                    $scope.allUser[index].lastMessageTime = message.createdAt;
+                    msg = message.mess;
+                    time = message.createdAt;
+                }
             }
+            $scope.allUserMsg.push(message);
+            $scope.allUser[index].lastMessage = msg;
+            $scope.allUser[index].lastMessageTime = time;
+        } catch (err) {
+            console.log("Error handling new message:", err);
         }
     }
+
+    // Function to update last message details for each user
+    function updateLastMessageDetails() {
+        try {
+            // Loop through all users in $scope.allUser
+            $scope.allUser.forEach(user => {
+                // Initialize variables to store the last message details for each user
+                let lastMessage = null;
+                let lastMessageTime = null;
+
+                // Loop through all messages in $scope.allUserArr
+                if ($scope.currUser !== user._id) {
+                    console.log("USER ::::: ", user)
+                    for (let i = $scope.allUserMsg.length - 1; i >= 0; i--) {
+                        const chat = $scope.allUserMsg[i];
+                        console.log("user chat ", chat)
+                        // Check if the message is related to the current user
+                        if (chat.senderId === user._id || chat.receiverId === user._id) {
+                            console.log("In IF CONDITION ", chat)
+                            // Update last message details for the user
+                            lastMessage = chat.message;
+                            lastMessageTime = new Date(chat.createdAt); // Convert to Date object
+                            console.log("Final Message :::: ", lastMessage, ":::: ", lastMessageTime)
+                            break; // Stop searching for last message once found
+                        }
+                    }
+
+                    // Update the user's last message details
+                    user.lastMessage = lastMessage;
+                    user.lastMessageTime = lastMessageTime;
+                }
+            });
+        } catch (err) {
+            console.log("Error updating last message details:", err);
+        }
+    }
+
+});
+
+// Custom filter to truncate the message and add '...ish'
+app.filter('truncateMessage', function () {
+    return function (input, maxLength) {
+        if (!input || input.length <= maxLength) {
+            return input;
+        }
+        return input.substring(0, maxLength) + '...';
+    };
 });

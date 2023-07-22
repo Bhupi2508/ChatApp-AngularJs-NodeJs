@@ -55,7 +55,7 @@
                 <div class="text">
                     <p class="text-muted">{{ x.firstname }} <span class="time text-muted small ng-binding"
                             style="font-family: monospace">{{ formatTime(x.lastMessageTime, "userList") }}</span></p>
-                    <p class="last-message" ng-if="x.lastMessage">{{ x.lastMessage }}</p>
+                    <p class="last-message" ng-if="x.lastMessage">{{ x.lastMessage | truncateMessage: 22 }}</p>
                 </div>
             </div>
 
