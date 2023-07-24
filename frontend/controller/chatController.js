@@ -158,8 +158,12 @@ app.controller('chatController', function ($scope, SocketService, $state, chatSe
     try {
         $scope.search = function () {
             if ($scope.searchText.length >= 3) {
-                chatServices.searchUser($scope, baseUrl);
-                console.log("searchResults ::: ", $scope)
+                chatServices.searchUser($scope.searchText, baseUrl).then(function (data) {
+                    console.log("searchResults ::: ", data.searchData)
+                    $scope.searchResults = data;
+                }).catch(function (error) {
+                    console.log("Error getting user results:", error);
+                });;;
             } else {
                 // If search text is less than 3 characters, clear the search results
                 $scope.searchResults = [];
