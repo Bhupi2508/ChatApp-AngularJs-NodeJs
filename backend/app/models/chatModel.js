@@ -22,14 +22,17 @@ const chatSchema = new Schema({
         type: String
     },
     message: {
-        type: String
-    }
+        type: String // For text messages
+    },
+    // fileUrl: {
+    //     type: String // For file URLs or paths
+    // }
 }, {
     timestamps: true
 });
 
 // Create a chatModel function and schema
-function chatModel() {}
+function chatModel() { }
 
 const Chat = mongoose.model('chatMessages', chatSchema);
 
@@ -37,13 +40,14 @@ try {
     chatModel.prototype.addMessage = (chatData, callback) => {
         console.log('In model => Data :: ', chatData.senderId);
 
-        // Create a new message object
+        // Create a new message object with the fileUrl field
         const newMessage = new Chat({
             senderId: chatData.senderId,
             senderName: chatData.senderName,
             receiverId: chatData.receiverId,
             receiverName: chatData.receiverName,
-            message: chatData.message
+            message: chatData.message || '',
+            // fileUrl: message.fileUrl // Save the file URL as the fileUrl
         });
         console.log("Created new message :: ", newMessage);
 
@@ -72,5 +76,16 @@ chatModel.prototype.userMsg = (req, callback) => {
         }
     });
 };
+
+// Retrieve user messages from the database
+// chatModel.prototype.uploadFile = (req, callback) => {
+//     Chat.find({}, (err, data) => {
+//         if (err) {
+//             callback("Error in model :: " + err);
+//         } else {
+//             callback(null, data);
+//         }
+//     });
+// };
 
 module.exports = new chatModel();

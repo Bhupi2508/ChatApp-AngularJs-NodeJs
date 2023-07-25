@@ -187,23 +187,47 @@ app.controller('chatController', function ($scope, SocketService, $state, chatSe
     }, true);
 
     try {
+        // Function to handle file uploads and add a new message
         $scope.addMessage = function () {
-            if ($scope.message) {
+            if ($scope.message || $scope.selectedFile) {
                 var msg = {
                     senderId: localStorage.getItem('userid'),
                     senderName: localStorage.getItem('name'),
                     receiverId: localStorage.getItem('ruserId'),
                     receiverName: localStorage.getItem('rusername'),
-                    message: $scope.message
+                    message: $scope.message || '',
+                    // file: $scope.selectedFile // Include the file as part of the message
                 };
-                $scope.message = '';
+                // $scope.message = '';
+                // $scope.selectedFile = null; // Reset the selectedFile after sending the message
 
-                SocketService.emit('createMessage', msg);
+                // // Send the message to the server using the /upload route
+                // $http.post('/upload', msg).then(function (response) {
+                //     // Message with file uploaded successfully
+                //     console.log(response.data.message);
+                // }).catch(function (error) {
+                //     // Handle error
+                //     console.log('Error sending message:', error);
+                // });
+
+                // Emit the message to all connected sockets (excluding the file)
+                SocketService.emit('createMessage', {
+                    senderId: msg.senderId,
+                    senderName: msg.senderName,
+                    receiverId: msg.receiverId,
+                    receiverName: msg.receiverName,
+                    message: msg.message
+                });
             }
-        }
+        };
     } catch (err) {
         console.log("Error in sending message to the receiver:", err);
     }
+
+    // Function to handle file selection
+    // $scope.onFileSelect = function (event) {
+    //     $scope.selectedFile = event.target.files[0];
+    // };
 
     try {
         $scope.logout = function () {
@@ -289,6 +313,14 @@ app.controller('chatController', function ($scope, SocketService, $state, chatSe
             console.log("Error updating last message details:", err);
         }
     }
+
+
+    // Function to check if the file URL points to an image
+    // $scope.isImage = function (fileUrl) {
+    //     const imageExtensions = ['.jpg', '.jpeg', '.png', '.gif', '.bmp'];
+    //     const extension = fileUrl.substr(fileUrl.lastIndexOf('.')).toLowerCase();
+    //     return imageExtensions.includes(extension);
+    // };
 
 });
 

@@ -79,6 +79,12 @@
                     <div class="chat-bubble"
                         ng-class="{'chat-bubble--left': chat.receiverId === currUser, 'chat-bubble--right': chat.senderId === currUser}">
                         {{chat.message}}
+
+                        <!-- Check if the message has a fileUrl -->
+                        <div ng-if="chat.fileUrl">
+                            <!-- Check if the file is an image (you can check for other file types as well) -->
+                            <img ng-if="isImage(chat.fileUrl)" ng-src="{{ chat.fileUrl }}" alt="Image">
+                        </div>
                         <div class="chat-timestamp">
                             <span>{{ formatTime(chat.createdAt, "message") }}</span>
                         </div>
@@ -90,6 +96,10 @@
                 <i class="material-icons">sentiment_very_satisfied</i>
                 <input type="text" ng-model="message" placeholder="Type your message here..."
                     ng-keypress="checkEnterKey($event)">
+                <label for="fileInput">
+                    <i class="material-icons">attach_file</i>
+                </label>
+                <input type="file" id="fileInput" style="display: none" accept="image/*" ng-change="uploadFile($event)">
                 <i class="material-icons">mic</i>
                 <button style="font: message-box;" type="submit" ng-click="addMessage()">Send</button>
             </div>

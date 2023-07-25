@@ -38,3 +38,19 @@ exports.userMsg = (req, callback) => {
     });
 };
 
+
+// Get user messages from the database
+// exports.uploadFile = (req, callback) => {
+//     console.log("User request");
+
+//     // Send data to model and callback from there
+//     chatModel.uploadFile(req, (err, data) => {
+//         if (err) {
+//             console.log("Chat services are not working");
+//             callback(err);
+//         } else {
+//             console.log("Chat service is working fine");
+//             callback(null, data);
+//         }
+//     });
+// };

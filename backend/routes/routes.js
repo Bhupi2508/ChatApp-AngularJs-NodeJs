@@ -18,5 +18,6 @@ router.post('/addMessage', chatController.addMessage);
 router.get('/getAllUser', authMiddleware.auth, userController.getAllUser);
 router.get('/userMsg', chatController.userMsg);
 router.post('/searchUser', userController.searchUser);
+// router.post('/upload', controllerChat.uploadFile);
 
 module.exports = router;
