@@ -15,7 +15,7 @@
     <link rel="stylesheet" href="../Styles/HomePage.css">
 </head>
 
-<body ng-app="chatApp" ng-controller="chatController" oncontextmenu="return false;">
+<body ng-app="chatapp" ng-controller="chatController" oncontextmenu="return false;">
     <div class="container">
         <div class="sidebar">
             <h2 class="curr-user">
@@ -96,10 +96,13 @@
                 <i class="material-icons">sentiment_very_satisfied</i>
                 <input type="text" ng-model="message" placeholder="Type your message here..."
                     ng-keypress="checkEnterKey($event)">
+                    
                 <label for="fileInput">
                     <i class="material-icons">attach_file</i>
                 </label>
-                <input type="file" id="fileInput" style="display: none" accept="image/*" ng-change="uploadFile($event)">
+                <input type="file" id="fileInput" style="display: none" accept="image/*" ng-model="file" ng-change="uploadFile($event)">
+
+
                 <div id="filePreview" style="display: none;">
                     <!-- File preview will be shown here -->
                     <img id="previewImage" style="max-width: 100px; max-height: 100px;" />

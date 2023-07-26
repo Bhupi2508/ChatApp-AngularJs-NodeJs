@@ -80,7 +80,9 @@ app.controller('chatController', function ($scope, SocketService, $state, chatSe
                         arr.push(a);
                     }
                 }
+
                 $scope.allUserArr = arr;
+                $scope.allUserMsg = userMessages;
             }).catch(function (error) {
                 console.log("Error getting user messages:", error);
             });
@@ -251,8 +253,6 @@ app.controller('chatController', function ($scope, SocketService, $state, chatSe
 
     // Function to handle new incoming messages
     function handleNewMessage(message) {
-        let msg;
-        let time;
         try {
             if (
                 localStorage.getItem('userid') == message.senderId ||
@@ -266,13 +266,11 @@ app.controller('chatController', function ($scope, SocketService, $state, chatSe
                 if (index !== -1) {
                     $scope.allUser[index].lastMessage = message.message;
                     $scope.allUser[index].lastMessageTime = message.createdAt;
-                    msg = message.mess;
-                    time = message.createdAt;
                 }
             }
             $scope.allUserMsg.push(message);
-            $scope.allUser[index].lastMessage = msg;
-            $scope.allUser[index].lastMessageTime = time;
+            // $scope.allUser[index].lastMessage = msg;
+            // $scope.allUser[index].lastMessageTime = time;
         } catch (err) {
             console.log("Error handling new message:", err);
         }
@@ -314,38 +312,45 @@ app.controller('chatController', function ($scope, SocketService, $state, chatSe
         }
     }
 
+    // Function to handle file upload and show a preview
+    $scope.uploadFile = function (event) {
+        console.log("::::::::::::: ", event);
+        // Get the selected file from the event
+        const fileInput = event.target;
 
+        // Check if a file is selected
+        if (fileInput.files && fileInput.files.length > 0) {
+            // Read the selected file
+            const file = fileInput.files[0];
+
+            // Check if the file is an image
+            if (file.type.startsWith('image/')) {
+                // Display the file preview (assuming you have an image element with the ID 'previewImage')
+                const reader = new FileReader();
+                reader.onload = function (e) {
+                    const previewImage = document.getElementById('previewImage');
+                    previewImage.src = e.target.result;
+                    document.getElementById('filePreview').style.display = 'block';
+                };
+                reader.readAsDataURL(file);
+            } else {
+                // Handle other file types if needed
+                console.log('Selected file is not an image.');
+            }
+        } else {
+            // If no file is selected, hide the file preview
+            document.getElementById('filePreview').style.display = 'none';
+        }
+    };
     // Function to check if the file URL points to an image
     // $scope.isImage = function (fileUrl) {
     //     const imageExtensions = ['.jpg', '.jpeg', '.png', '.gif', '.bmp'];
     //     const extension = fileUrl.substr(fileUrl.lastIndexOf('.')).toLowerCase();
     //     return imageExtensions.includes(extension);
     // };
-
+    // Add the 'uploadFile' function to handle file selection
 });
 
-// Function to show a preview of the selected image
-function showPreview(event) {
-    console.log("showPreview function called." , event);
-    const fileInput = event.target;
-    const filePreview = document.getElementById("filePreview");
-    const previewImage = document.getElementById("previewImage");
-
-    if (fileInput.files && fileInput.files[0]) {
-        const reader = new FileReader();
-
-        reader.onload = function (e) {
-            console.log("Image loaded. Displaying preview.");
-            previewImage.src = e.target.result;
-            filePreview.style.display = "block";
-        };
-
-        reader.readAsDataURL(fileInput.files[0]);
-    }
-}
-
-// Attach the function to the file input change event
-document.getElementById("fileInput").addEventListener("change", showPreview);
 
 
 // Custom filter to truncate the message and add '...ish'
