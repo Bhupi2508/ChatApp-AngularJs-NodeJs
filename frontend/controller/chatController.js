@@ -198,7 +198,7 @@ app.controller('chatController', function ($scope, SocketService, $state, chatSe
                     message: $scope.message || '',
                     // file: $scope.selectedFile // Include the file as part of the message
                 };
-                // $scope.message = '';
+                $scope.message = '';
                 // $scope.selectedFile = null; // Reset the selectedFile after sending the message
 
                 // // Send the message to the server using the /upload route
@@ -323,6 +323,30 @@ app.controller('chatController', function ($scope, SocketService, $state, chatSe
     // };
 
 });
+
+// Function to show a preview of the selected image
+function showPreview(event) {
+    console.log("showPreview function called." , event);
+    const fileInput = event.target;
+    const filePreview = document.getElementById("filePreview");
+    const previewImage = document.getElementById("previewImage");
+
+    if (fileInput.files && fileInput.files[0]) {
+        const reader = new FileReader();
+
+        reader.onload = function (e) {
+            console.log("Image loaded. Displaying preview.");
+            previewImage.src = e.target.result;
+            filePreview.style.display = "block";
+        };
+
+        reader.readAsDataURL(fileInput.files[0]);
+    }
+}
+
+// Attach the function to the file input change event
+document.getElementById("fileInput").addEventListener("change", showPreview);
+
 
 // Custom filter to truncate the message and add '...ish'
 app.filter('truncateMessage', function () {

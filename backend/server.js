@@ -40,6 +40,7 @@ ioSocket.sockets.on('connection', function (socket) {
 
     // Listen for 'createMessage' event to receive messages
     socket.on('createMessage', function (message) {
+        console.log("::::: message", message)
         controllerChat.addMessage(message, (err, data) => {
             if (err) {
                 console.log("Error on message :: ", err);

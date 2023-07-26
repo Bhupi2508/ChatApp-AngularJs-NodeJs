@@ -100,6 +100,10 @@
                     <i class="material-icons">attach_file</i>
                 </label>
                 <input type="file" id="fileInput" style="display: none" accept="image/*" ng-change="uploadFile($event)">
+                <div id="filePreview" style="display: none;">
+                    <!-- File preview will be shown here -->
+                    <img id="previewImage" style="max-width: 100px; max-height: 100px;" />
+                </div>
                 <i class="material-icons">mic</i>
                 <button style="font: message-box;" type="submit" ng-click="addMessage()">Send</button>
             </div>
