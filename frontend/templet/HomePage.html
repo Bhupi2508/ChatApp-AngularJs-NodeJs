@@ -85,12 +85,18 @@
                 <div class="user-logout"><a href="#!/login" ng-click="logout()">Logout</a></div>
             </div>
             <div class="chat-msg" id="messageBody">
+                <!-- Check if allUserArr is empty or has a length of 0 -->
+                <div ng-if="allUserArr.length === 0">
+                    <!-- Show the single image in the center -->
+                    <img src="../assets/41967273-88b42470-7a01-11e8-8328-51e4f5b894f1.png" alt="Center Image">
+                </div>
+                <!-- If allUserArr is not empty, display the chat messages -->
                 <div class="chat-message" ng-repeat="chat in allUserArr"
                     ng-class="{'sender': chat.receiverId === currUser, 'receiver': chat.senderId === currUser}">
                     <div class="chat-bubble"
                         ng-class="{'chat-bubble--left': chat.receiverId === currUser, 'chat-bubble--right': chat.senderId === currUser}">
                         {{chat.message}}
-
+            
                         <!-- Check if the message has a fileUrl -->
                         <div ng-if="chat.fileUrl">
                             <!-- Check if the file is an image (you can check for other file types as well) -->
@@ -101,8 +107,8 @@
                         </div>
                     </div>
                 </div>
-
             </div>
+            
             <div class="chat-box-tray">
                 <i class="material-icons">sentiment_very_satisfied</i>
                 <input type="text" ng-model="message" placeholder="Type your message here..."
