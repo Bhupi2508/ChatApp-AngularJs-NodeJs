@@ -109,10 +109,39 @@ app.controller('chatController', function ($scope, SocketService, $state, chatSe
             $scope.userMsg();
             $scope.searchResults = []
             $scope.searchText = '';
+
+            // Check the screen width
+            const screenWidth = window.innerWidth || document.documentElement.clientWidth || document.body.clientWidth;
+            if (screenWidth < 1024) {
+                // Hide the sidebar and display the chat area
+                const chatArea = document.querySelector('.chat-area');
+                const sidebar = document.querySelector('.sidebar');
+
+                chatArea.style.display = 'flex';
+                sidebar.style.display = 'none';
+
+                // Show the back button
+                $scope.showBackButton = true;
+
+                // Toggle the 'show' class to show/hide the chat area
+                chatArea.classList.toggle('show');
+            }
         };
     } catch (err) {
         console.log("Error occurd during clicked on user ::::: ", err);
     }
+
+    // Function to handle the back button click
+    $scope.goBackToSidebar = function () {
+        const chatArea = document.querySelector('.chat-area');
+        const sidebar = document.querySelector('.sidebar');
+
+        chatArea.style.display = 'none';
+        sidebar.style.display = 'block';
+
+        // Hide the back button
+        $scope.showBackButton = false;
+    };
 
     // Function to format time in "05:25 pm" format
     $scope.formatTime = function (timeString, module) {
@@ -254,6 +283,9 @@ app.controller('chatController', function ($scope, SocketService, $state, chatSe
             }
         }
     };
+
+    $scope.isLessThan1024 = window.innerWidth < 1024;
+
 
     // Function to handle new incoming messages
     function handleNewMessage(message) {

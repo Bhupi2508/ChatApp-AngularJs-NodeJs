@@ -297,6 +297,49 @@ hr {
     margin-top: 9%;
 }
 
+.image-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    /* You can adjust the height as needed */
+    width: 70%;
+    margin: auto;
+    /* Center the container horizontally */
+}
+
+.no-message {
+    text-align: center;
+    font-size: 24px;
+    font-weight: bold;
+    color: #888;
+}
+
+.chat-header {
+    display: flex;
+    align-items: center;
+    background-color: #f8f8f8;
+    padding: 10px 15px;
+    position: sticky;
+    top: 0;
+    z-index: 1;
+}
+
+.back-button {
+    background: none;
+    border: none;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    color: #007bff;
+    font-size: 16px;
+}
+
+.back-button i {
+    margin-right: 5px;
+}
+
+
 /* Media queries for responsiveness */
 /* For screens with a maximum width of 1024px (e.g., tablets) */
 @media screen and (max-width: 1024px) {
@@ -308,24 +351,38 @@ hr {
     .sidebar {
         width: 100%;
         height: auto;
-        order: 2;
+        /* order: 2; */
         padding: 10px;
+        /* order: 1; */
+        /* Move the sidebar above the chat area */
     }
 
     .chat-msg {
         padding: 5%;
+        margin-top: 12%;
     }
 
     .chat-area {
+        display: none;
+    }
+
+    .chat-area.show {
         display: flex;
         background-color: #f8f8f8;
-        overflow-y: auto;
+        overflow-y: clip;
         flex-direction: column;
         flex-wrap: nowrap;
         justify-content: flex-end;
         order: 1;
         height: calc(100% - 60px);
-        width: 97%;
+        width: 100%;
+    }
+
+    .image-container {
+        width: 80%;
+        /* You can adjust the width as needed for this breakpoint */
+        height: 0%;
+        padding: 8%;
     }
 
     /* Additional tablet-specific styles (if needed) */
@@ -356,6 +413,13 @@ hr {
 
     .chat-area {
         width: 97%;
+    }
+
+    .image-container {
+        width: 70%;
+        height: 0%;
+        padding: 15%;
+        margin-top: 10%;
     }
 
     /* Additional small tablet and larger phone-specific styles (if needed) */
@@ -393,6 +457,13 @@ hr {
 
     .chat-msg {
         margin-top: 20%;
+    }
+
+    .image-container {
+        width: 70%;
+        height: 0%;
+        padding: 15%;
+        margin-top: 10%;
     }
 
     /* Additional mobile-specific styles (if needed) */

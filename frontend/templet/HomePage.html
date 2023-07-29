@@ -69,6 +69,7 @@
         </div>
 
         <div class="chat-area">
+
             <div class="chat-logout">
                 <h2 class="curr-user">
                     <!-- Display the current user's profile icon -->
@@ -80,15 +81,25 @@
                             src="https://i.pinimg.com/236x/47/5a/86/475a86177aeedacf8dc7f5e2b4eff61f.jpg"
                             alt="Default Profile Image">
                     </div>
+                    <div class="chat-header">
+                        <!-- Add the back button with ng-click to handle the click event -->
+                        <button class="back-button" ng-click="goBackToSidebar()" ng-show="showBackButton">
+                            <i class="material-icons">arrow_back</i> Back to Sidebar
+                        </button>
+                    </div>
                     <div> {{ receiverUserName}}'s Chat</div>
                 </h2>
                 <div class="user-logout"><a href="#!/login" ng-click="logout()">Logout</a></div>
             </div>
             <div class="chat-msg" id="messageBody">
                 <!-- Check if allUserArr is empty or has a length of 0 -->
-                <div ng-if="allUserArr.length === 0">
-                    <!-- Show the single image in the center -->
-                    <img src="../assets/41967273-88b42470-7a01-11e8-8328-51e4f5b894f1.png" alt="Center Image">
+                <!-- Message container -->
+                <div ng-if="allUserArr.length === 0" class="image-container">
+                    <div class="no-message">
+                        <span>No message yet! Start the conversation.</span>
+                        <i class="material-icons">insert_emoticon</i>
+                        <!-- Replace 'insert_emoticon' with the desired Material Icon -->
+                    </div>
                 </div>
                 <!-- If allUserArr is not empty, display the chat messages -->
                 <div class="chat-message" ng-repeat="chat in allUserArr"
@@ -96,7 +107,7 @@
                     <div class="chat-bubble"
                         ng-class="{'chat-bubble--left': chat.receiverId === currUser, 'chat-bubble--right': chat.senderId === currUser}">
                         {{chat.message}}
-            
+
                         <!-- Check if the message has a fileUrl -->
                         <div ng-if="chat.fileUrl">
                             <!-- Check if the file is an image (you can check for other file types as well) -->
@@ -108,7 +119,6 @@
                     </div>
                 </div>
             </div>
-            
             <div class="chat-box-tray">
                 <i class="material-icons">sentiment_very_satisfied</i>
                 <input type="text" ng-model="message" placeholder="Type your message here..."
@@ -130,7 +140,6 @@
             </div>
 
         </div>
-
         <script src="https://cdnjs.cloudflare.com/ajax/libs/angular.js/1.8.2/angular.min.js"></script>
 </body>
 
