@@ -19,7 +19,7 @@ app.service('chatServices', function ($http) {
             return response.data.result;
         }).catch(function (error) {
             console.log("Error occurred while getting users:", error);
-            return [];
+            return response.data.result = false;
         });
     };
 
@@ -68,7 +68,7 @@ app.service('chatServices', function ($http) {
             return response.data.result;
         }).catch(function (error) {
             console.log("Error occurred while getting messages:", error);
-            return [];
+            return response.data.result = false;
         });
     };
 

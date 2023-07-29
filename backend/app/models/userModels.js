@@ -89,6 +89,7 @@ userModel.prototype.resetPassword = (req, callback) => {
 
 // Get all users
 userModel.prototype.getAllUser = (req, callback) => {
+    console.log(":::: ", req)
     User.find({}, (err, data) => {
         if (err) {
             callback("Error in model :: " + err);

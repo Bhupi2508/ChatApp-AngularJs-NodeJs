@@ -21,8 +21,8 @@ app.controller('chatController', function ($scope, SocketService, $state, chatSe
     $scope.receiverUserName = localStorage.getItem('rusername');
 
     console.log("token : ", token);
-
     if (token === null) {
+        localStorage.clear();
         $state.go('login');
     }
 
@@ -35,9 +35,11 @@ app.controller('chatController', function ($scope, SocketService, $state, chatSe
     try {
         $scope.getAllUser = function () {
             chatServices.getAllUser(token).then(function (users) {
+                console.log("User messages fetched 1111 :", users);
                 $scope.allUser = users;
                 console.log("Users fetched:", users);
                 return chatServices.userMsg(); // Call userMsg after fetching users
+
             }).then(function (userMessages) {
                 let array = [];
                 for (let i = 0; i < userMessages.length; i++) {
@@ -57,6 +59,8 @@ app.controller('chatController', function ($scope, SocketService, $state, chatSe
                 updateLastMessageDetails();
             }).catch(function (error) {
                 console.log("Error getting all users or user messages:", error);
+                localStorage.clear();
+                $state.go('login');
             });
         };
     } catch (err) {
@@ -69,7 +73,7 @@ app.controller('chatController', function ($scope, SocketService, $state, chatSe
         $scope.userMsg = function () {
             let arr = [];
             chatServices.userMsg().then(function (userMessages) {
-                console.log("User messages fetched:", userMessages);
+                console.log("User messages fetched  :  ", userMessages);
                 // $scope.allUserMsg = userMessages;
                 for (let i = 0; i < userMessages.length; i++) {
                     var a = userMessages[i];
@@ -85,6 +89,8 @@ app.controller('chatController', function ($scope, SocketService, $state, chatSe
                 $scope.allUserMsg = userMessages;
             }).catch(function (error) {
                 console.log("Error getting user messages:", error);
+                localStorage.clear();
+                $state.go('login');
             });
         };
     } catch (err) {

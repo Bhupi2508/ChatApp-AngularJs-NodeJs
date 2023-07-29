@@ -13,9 +13,7 @@ const auth = (req, res, next) => {
     console.log("In auth");
     const token = req.headers["token"];
     console.log("Token in auth :: ", token);
-    const response = {
-        message: "Unauthorized user"
-    };
+    const response = "Unauthorized user";
 
     // Verify the token and handle the response
     jwt.verify(token, secret, (err, decoded) => {
@@ -23,9 +21,9 @@ const auth = (req, res, next) => {
             console.log("Error :: ", err);
             if (err.name === "TokenExpiredError") {
                 // Token has expired
-                return res.status(401).send({ message: "Token has expired" });
+                return res.status(401).send(`${response} | ${err.name}`);
             }
-            return res.status(401).send(response);
+            return res.status(401).send(`${response} | ${err.name}`);
         } else {
             console.log("Decoded Data :: ", decoded);
             req.decoded = decoded;
