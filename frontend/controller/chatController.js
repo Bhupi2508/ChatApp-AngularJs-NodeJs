@@ -20,7 +20,7 @@ app.controller('chatController', function ($scope, SocketService, $state, chatSe
     $scope.receiverId = localStorage.getItem('ruserId');
     $scope.receiverUserName = localStorage.getItem('rusername');
 
-    console.log("token : ", token);
+    console.log("user token ::::::: ", token);
     if (token === null) {
         localStorage.clear();
         $state.go('login');
@@ -29,17 +29,15 @@ app.controller('chatController', function ($scope, SocketService, $state, chatSe
     try {
         SocketService.on('startMessage', handleNewMessage);
     } catch (err) {
-        console.log("Error finding message:", err);
+        console.log("Error finding message :::::: ", err);
     }
 
     try {
         $scope.getAllUser = function () {
             chatServices.getAllUser(token).then(function (users) {
-                console.log("User messages fetched 1111 :", users);
+                console.log("All User fetched ::::::: ", users);
                 $scope.allUser = users;
-                console.log("Users fetched:", users);
                 return chatServices.userMsg(); // Call userMsg after fetching users
-
             }).then(function (userMessages) {
                 let array = [];
                 for (let i = 0; i < userMessages.length; i++) {
@@ -54,17 +52,17 @@ app.controller('chatController', function ($scope, SocketService, $state, chatSe
                 $scope.allUserArr = array;
                 // all msg
                 $scope.allUserMsg = userMessages
-                console.log("User messages fetched:", userMessages);
+                console.log("Sender and Receiver Messages Updated :::::: ", userMessages);
                 // Call the function to update last message details
                 updateLastMessageDetails();
             }).catch(function (error) {
-                console.log("Error getting all users or user messages:", error);
+                console.log("Error occurd during fetch users :::: ", error);
                 localStorage.clear();
                 $state.go('login');
             });
         };
     } catch (err) {
-        console.log("Error getting all users:", err);
+        console.log("Error getting all users :::::: ", err);
     }
 
     $scope.getAllUser();
@@ -73,7 +71,7 @@ app.controller('chatController', function ($scope, SocketService, $state, chatSe
         $scope.userMsg = function () {
             let arr = [];
             chatServices.userMsg().then(function (userMessages) {
-                console.log("User messages fetched  :  ", userMessages);
+                console.log("Fetched user's mesages ::::: ", userMessages);
                 // $scope.allUserMsg = userMessages;
                 for (let i = 0; i < userMessages.length; i++) {
                     var a = userMessages[i];
@@ -88,20 +86,20 @@ app.controller('chatController', function ($scope, SocketService, $state, chatSe
                 $scope.allUserArr = arr;
                 $scope.allUserMsg = userMessages;
             }).catch(function (error) {
-                console.log("Error getting user messages:", error);
+                console.log("Error getting user messages :::::: ", error);
                 localStorage.clear();
                 $state.go('login');
             });
         };
     } catch (err) {
-        console.log("Error fetching user messages:", err);
+        console.log("Error fetching user messages :::::: ", err);
     }
 
     $scope.userMsg();
 
     try {
         $scope.person = function (userData) {
-            console.log(":::::::::::::::::::::::::::: ", userData)
+            console.log("Clicked on user :::::: ", userData)
             $scope.allUserArr = '';
             $scope.allUserMsg = '';
             localStorage.setItem('rusername', userData.firstname);
@@ -113,7 +111,7 @@ app.controller('chatController', function ($scope, SocketService, $state, chatSe
             $scope.searchText = '';
         };
     } catch (err) {
-        console.log("Error setting user data:", err);
+        console.log("Error occurd during clicked on user ::::: ", err);
     }
 
     // Function to format time in "05:25 pm" format
@@ -170,7 +168,7 @@ app.controller('chatController', function ($scope, SocketService, $state, chatSe
                     console.log("searchResults ::: ", data.searchData)
                     $scope.searchResults = data;
                 }).catch(function (error) {
-                    console.log("Error getting user results:", error);
+                    console.log("Error getting during searchresults ::::::: ", error);
                 });;;
             } else {
                 // If search text is less than 3 characters, clear the search results
@@ -229,7 +227,7 @@ app.controller('chatController', function ($scope, SocketService, $state, chatSe
             }
         };
     } catch (err) {
-        console.log("Error in sending message to the receiver:", err);
+        console.log("Error in sending message to the receivern ::::::: ", err);
     }
 
     // Function to handle file selection
@@ -243,7 +241,7 @@ app.controller('chatController', function ($scope, SocketService, $state, chatSe
             $state.go('login');
         };
     } catch (err) {
-        console.log("Error in logging out:", err);
+        console.log("Error in logging out ::::::: ", err);
     }
 
     $scope.checkEnterKey = function (event) {
@@ -252,7 +250,7 @@ app.controller('chatController', function ($scope, SocketService, $state, chatSe
             try {
                 $scope.addMessage();
             } catch (err) {
-                console.log("Error adding message:", err);
+                console.log("Error adding message ::::::: ", err);
             }
         }
     };
@@ -278,7 +276,7 @@ app.controller('chatController', function ($scope, SocketService, $state, chatSe
             // $scope.allUser[index].lastMessage = msg;
             // $scope.allUser[index].lastMessageTime = time;
         } catch (err) {
-            console.log("Error handling new message:", err);
+            console.log("Error handling new message :::::::: ", err);
         }
     }
 
@@ -293,17 +291,13 @@ app.controller('chatController', function ($scope, SocketService, $state, chatSe
 
                 // Loop through all messages in $scope.allUserArr
                 if ($scope.currUser !== user._id) {
-                    console.log("USER ::::: ", user)
                     for (let i = $scope.allUserMsg.length - 1; i >= 0; i--) {
                         const chat = $scope.allUserMsg[i];
-                        console.log("user chat ", chat)
                         // Check if the message is related to the current user
                         if (chat.senderId === user._id || chat.receiverId === user._id) {
-                            console.log("In IF CONDITION ", chat)
                             // Update last message details for the user
                             lastMessage = chat.message;
                             lastMessageTime = new Date(chat.createdAt); // Convert to Date object
-                            console.log("Final Message :::: ", lastMessage, ":::: ", lastMessageTime)
                             break; // Stop searching for last message once found
                         }
                     }
@@ -314,7 +308,7 @@ app.controller('chatController', function ($scope, SocketService, $state, chatSe
                 }
             });
         } catch (err) {
-            console.log("Error updating last message details:", err);
+            console.log("Error updating last message details :::::::", err);
         }
     }
 

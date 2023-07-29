@@ -21,11 +21,14 @@
             <h2 class="curr-user">
                 <!-- Display the current user's profile icon -->
                 <div class="profile-image">
-                    {{ currUserName.charAt(0).toUpperCase() }}
+                    <!-- Use ng-if and AngularJS expressions to conditionally display the default image URL -->
+                    <img ng-if="receiverImageUrl" ng-src="{{ receiverImageUrl }}" alt="Profile Image">
+                    <img ng-if="!receiverImageUrl"
+                        src="https://i.pinimg.com/236x/47/5a/86/475a86177aeedacf8dc7f5e2b4eff61f.jpg"
+                        alt="Default Profile Image">
                 </div>
-                {{ currUserName }}
+                <div> {{ currUserName}}'s Chat</div>
             </h2>
-
 
             <!-- Your search bar HTML code -->
             <div class="search-box">
@@ -50,7 +53,11 @@
             <div class="friend-drawer friend-drawer--onhover" ng-repeat="x in allUser" ng-click="person(x)"
                 ng-show="currUserName != x.firstname" ng-class="{ 'selected-row': receiverUserName === x.firstname }">
                 <div class="profile-image">
-                    {{ x.firstname.charAt(0).toUpperCase() }}
+                    <!-- Use ng-if and AngularJS expressions to conditionally display the default image URL -->
+                    <img ng-if="receiverImageUrl" ng-src="{{ receiverImageUrl }}" alt="Profile Image">
+                    <img ng-if="!receiverImageUrl"
+                        src="https://i.pinimg.com/236x/47/5a/86/475a86177aeedacf8dc7f5e2b4eff61f.jpg"
+                        alt="Default Profile Image">
                 </div>
                 <div class="text">
                     <p class="text-muted">{{ x.firstname }} <span class="time text-muted small ng-binding"
@@ -61,15 +68,19 @@
 
         </div>
 
-
         <div class="chat-area">
             <div class="chat-logout">
                 <h2 class="curr-user">
                     <!-- Display the current user's profile icon -->
+                    <!-- Use the img tag with ng-src to show the receiver's image -->
                     <div class="profile-image">
-                        {{ receiverUserName.charAt(0).toUpperCase() }}
+                        <!-- Use ng-if and AngularJS expressions to conditionally display the default image URL -->
+                        <img ng-if="receiverImageUrl" ng-src="{{ receiverImageUrl }}" alt="Profile Image">
+                        <img ng-if="!receiverImageUrl"
+                            src="https://i.pinimg.com/236x/47/5a/86/475a86177aeedacf8dc7f5e2b4eff61f.jpg"
+                            alt="Default Profile Image">
                     </div>
-                    {{ receiverUserName}}'s Chat
+                    <div> {{ receiverUserName}}'s Chat</div>
                 </h2>
                 <div class="user-logout"><a href="#!/login" ng-click="logout()">Logout</a></div>
             </div>
@@ -96,11 +107,12 @@
                 <i class="material-icons">sentiment_very_satisfied</i>
                 <input type="text" ng-model="message" placeholder="Type your message here..."
                     ng-keypress="checkEnterKey($event)">
-                    
+
                 <label for="fileInput">
                     <i class="material-icons">attach_file</i>
                 </label>
-                <input type="file" id="fileInput" style="display: none" accept="image/*" ng-model="file" ng-change="uploadFile($event)">
+                <input type="file" id="fileInput" style="display: none" accept="image/*" ng-model="file"
+                    ng-change="uploadFile($event)">
 
 
                 <div id="filePreview" style="display: none;">

@@ -15,8 +15,7 @@ app.service('serviceLogin', function ($http, $state) {
             data: data,
         }).then(
             function successCallback(response) {
-                console.log("Login successful at serviceLogin in client side ", response.data);
-                console.log("Email ", response.data.message.email);
+                console.log("Login successful at serviceLogin in client side ::::: ", response.data);
                 var userid = response.data.message._id;
                 var name = response.data.message.firstname;
                 var token = response.data.token;

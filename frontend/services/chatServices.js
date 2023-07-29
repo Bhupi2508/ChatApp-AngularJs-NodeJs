@@ -15,10 +15,10 @@ app.service('chatServices', function ($http) {
                 'token': usertoken,
             }
         }).then(function (response) {
-            console.log("All users data : ", response.data.result);
+            console.log("getAllUser =>>>> All users data : ", response.data.result);
             return response.data.result;
         }).catch(function (error) {
-            console.log("Error occurred while getting users:", error);
+            console.log("Error occurred while getting users ::::::: ", error);
             return response.data.result = false;
         });
     };
@@ -33,7 +33,7 @@ app.service('chatServices', function ($http) {
                 'token': usertoken,
             }
         }).then(function (response) {
-            console.log("Response data : ", response.data);
+            console.log("userMsg =>>>> Response data :::::: ", response.data);
 
             let lastAaaaValue = null;
             for (let i = 0; i < response.data.result.length; i++) {
@@ -43,10 +43,6 @@ app.service('chatServices', function ($http) {
                 //     (localStorage.getItem('userid') == a.senderId && localStorage.getItem('ruserId') == a.receiverId) ||
                 //     (localStorage.getItem('userid') == a.receiverId && localStorage.getItem('ruserId') == a.senderId)
                 // ) {
-                console.log("Local user:", localStorage.getItem('userid'));
-                console.log("A user:", a.senderId);
-                console.log("Local receiver id:", localStorage.getItem('ruserId'));
-                console.log("Receiver id:", a.receiverId);
 
                 // arr.push(a);
             }
@@ -54,26 +50,24 @@ app.service('chatServices', function ($http) {
                 lastAaaaValue = a;
             }
             // }
-
-            console.log("::::::::::::::: ", lastAaaaValue)
             if (localStorage.getItem('rusername') === null) {
+                console.log("localStorage rusername was empty")
                 localStorage.setItem('rusername', lastAaaaValue.receiverName);
             }
 
             if (localStorage.getItem('ruserId') === null) {
+                console.log("localStorage ruserId was empty")
                 localStorage.setItem('ruserId', lastAaaaValue.receiverId);
             }
 
-            console.log("User messages retrieved successfully:", arr);
             return response.data.result;
         }).catch(function (error) {
-            console.log("Error occurred while getting messages:", error);
+            console.log("Error occurred while getting messages ::::::: ", error);
             return response.data.result = false;
         });
     };
 
     this.searchUser = function (searchText) {
-        console.log("::::::::::::::::::::: ", searchText);
         var usertoken = localStorage.getItem('token');
         return $http({
             method: 'POST',
@@ -84,11 +78,10 @@ app.service('chatServices', function ($http) {
                 'Content-Type': 'application/json'
             }
         }).then(function (response) {
-            console.log("Response:", response);
-            console.log("Response data:", response.data);
+            console.log("getAllUser =>>>> Response ::::::: ", response);
             return response.data;
         }).catch(function (error) {
-            console.log("Error occurred while searching users:", error);
+            console.log("Error occurred while searching users ::::::: ", error);
             return [];
         });
     };
