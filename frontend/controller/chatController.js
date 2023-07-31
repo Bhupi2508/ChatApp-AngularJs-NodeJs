@@ -188,7 +188,7 @@ app.controller('chatController', function ($scope, SocketService, $state, chatSe
         return `${formattedTime} ${formattedDate}`;
     };
 
-    $scope.searchText = '';
+    $scope.searchText = ''; 
 
     try {
         $scope.search = function () {

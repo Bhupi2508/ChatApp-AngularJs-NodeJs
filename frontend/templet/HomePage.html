@@ -27,10 +27,11 @@
                         src="https://i.pinimg.com/236x/47/5a/86/475a86177aeedacf8dc7f5e2b4eff61f.jpg"
                         alt="Default Profile Image">
                 </div>
-                <div> {{ currUserName}}'s Chat</div>
+                <div><button class="account-button">{{ currUserName }}</button></div>
+                <!-- <div class="user-logout"><a href="#!/login" ng-click="logout()">Logout</a></div> -->
             </h2>
 
-            <!-- Your search bar HTML code -->
+            <!-- Search bar HTML code -->
             <div class="search-box">
                 <div class="input-wrapper">
                     <i class="material-icons">search</i>
@@ -40,16 +41,16 @@
                 <div class="search-results" ng-if="searchResults.searchData.length > 0">
                     <ul>
                         <li ng-repeat="result in searchResults.searchData" ng-show="currUserName != result.firstname">
+                            <!-- Button to select a person from search results -->
                             <button class="btn btn-primary" ng-click="person(result)">
                                 <span ng-bind="result.firstname + ' ' + result.lastname"></span>
                             </button>
                         </li>
-
                     </ul>
                 </div>
             </div>
 
-            <!-- Inside the ng-repeat for displaying user list -->
+            <!-- User list display using ng-repeat -->
             <div class="friend-drawer friend-drawer--onhover" ng-repeat="x in allUser" ng-click="person(x)"
                 ng-show="currUserName != x.firstname" ng-class="{ 'selected-row': receiverUserName === x.firstname }">
                 <div class="profile-image">
@@ -60,20 +61,27 @@
                         alt="Default Profile Image">
                 </div>
                 <div class="text">
+                    <!-- Display user's firstname and last message time -->
                     <p class="text-muted">{{ x.firstname }} <span class="time text-muted small ng-binding"
                             style="font-family: monospace">{{ formatTime(x.lastMessageTime, "userList") }}</span></p>
+                    <!-- Display the last message truncated to 22 characters -->
                     <p class="last-message" ng-if="x.lastMessage">{{ x.lastMessage | truncateMessage: 22 }}</p>
                 </div>
             </div>
-
         </div>
 
-        <div class="chat-area">
 
+        <div class="chat-area">
             <div class="chat-logout">
                 <h2 class="curr-user">
                     <!-- Display the current user's profile icon -->
                     <!-- Use the img tag with ng-src to show the receiver's image -->
+                    <div class="chat-header">
+                        <!-- Add the back button with ng-click to handle the click event -->
+                        <button class="back-button" ng-click="goBackToSidebar()" ng-show="showBackButton">
+                            <i class="material-icons">arrow_back</i>
+                        </button>
+                    </div>
                     <div class="profile-image">
                         <!-- Use ng-if and AngularJS expressions to conditionally display the default image URL -->
                         <img ng-if="receiverImageUrl" ng-src="{{ receiverImageUrl }}" alt="Profile Image">
@@ -81,16 +89,11 @@
                             src="https://i.pinimg.com/236x/47/5a/86/475a86177aeedacf8dc7f5e2b4eff61f.jpg"
                             alt="Default Profile Image">
                     </div>
-                    <div class="chat-header">
-                        <!-- Add the back button with ng-click to handle the click event -->
-                        <button class="back-button" ng-click="goBackToSidebar()" ng-show="showBackButton">
-                            <i class="material-icons">arrow_back</i> Back to Sidebar
-                        </button>
-                    </div>
-                    <div> {{ receiverUserName}}'s Chat</div>
+                    <div>{{ receiverUserName }}'s Chat</div>
                 </h2>
                 <div class="user-logout"><a href="#!/login" ng-click="logout()">Logout</a></div>
             </div>
+
             <div class="chat-msg" id="messageBody">
                 <!-- Check if allUserArr is empty or has a length of 0 -->
                 <!-- Message container -->
@@ -106,7 +109,7 @@
                     ng-class="{'sender': chat.receiverId === currUser, 'receiver': chat.senderId === currUser}">
                     <div class="chat-bubble"
                         ng-class="{'chat-bubble--left': chat.receiverId === currUser, 'chat-bubble--right': chat.senderId === currUser}">
-                        {{chat.message}}
+                        {{ chat.message }}
 
                         <!-- Check if the message has a fileUrl -->
                         <div ng-if="chat.fileUrl">
@@ -119,6 +122,7 @@
                     </div>
                 </div>
             </div>
+
             <div class="chat-box-tray">
                 <i class="material-icons">sentiment_very_satisfied</i>
                 <input type="text" ng-model="message" placeholder="Type your message here..."
@@ -130,7 +134,6 @@
                 <input type="file" id="fileInput" style="display: none" accept="image/*" ng-model="file"
                     ng-change="uploadFile($event)">
 
-
                 <div id="filePreview" style="display: none;">
                     <!-- File preview will be shown here -->
                     <img id="previewImage" style="max-width: 100px; max-height: 100px;" />
@@ -138,8 +141,8 @@
                 <i class="material-icons">mic</i>
                 <button style="font: message-box;" type="submit" ng-click="addMessage()">Send</button>
             </div>
-
         </div>
+
         <script src="https://cdnjs.cloudflare.com/ajax/libs/angular.js/1.8.2/angular.min.js"></script>
 </body>
 
