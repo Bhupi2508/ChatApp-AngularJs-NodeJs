@@ -182,13 +182,14 @@ app.controller('chatController', function ($scope, SocketService, $state, chatSe
         if (module === "message") {
             return `${formattedTime} ${formattedDate}`;
         } else if (module === "userList") {
-            return `${formattedDate} ${formattedTime} `;
+            // return `${formattedDate} ${formattedTime} `;
+            return `${formattedTime} `;
         }
 
         return `${formattedTime} ${formattedDate}`;
     };
 
-    $scope.searchText = ''; 
+    $scope.searchText = '';
 
     try {
         $scope.search = function () {
@@ -386,11 +387,43 @@ app.controller('chatController', function ($scope, SocketService, $state, chatSe
 
 
 // Custom filter to truncate the message and add '...ish'
-app.filter('truncateMessage', function () {
+app.filter('truncateMessage', ['$window', function ($window) {
+    // Define different truncation lengths based on the screen size
+    var maxCharsSmall = 10;
+    var maxCharsMedium = 15;
+    var maxCharsLarge = 22;
+
+    // Function to calculate and return the appropriate truncation length
+    function getMaxChars(windowWidth) {
+        if (windowWidth < 768) {
+            return maxCharsSmall;
+        } else if (windowWidth >= 768 && windowWidth < 1200) {
+            return maxCharsMedium;
+        } else {
+            return maxCharsLarge;
+        }
+    }
+
     return function (input, maxLength) {
-        if (!input || input.length <= maxLength) {
+        // Get the initial window width
+        var windowWidth = $window.innerWidth;
+
+        // Calculate the desired maximum length based on the initial screen size
+        var maxChars = getMaxChars(windowWidth);
+
+        // Update the truncation length on window resize
+        angular.element($window).on('resize', function () {
+            windowWidth = $window.innerWidth;
+            maxChars = getMaxChars(windowWidth);
+        });
+
+        // If the input is null or shorter than maxChars, return it as is
+        if (!input || input.length <= maxChars) {
             return input;
         }
-        return input.substring(0, maxLength) + '...';
+
+        // Truncate the input message and add '...' at the end
+        return input.substring(0, maxChars) + '...';
     };
-});
+}]);
+

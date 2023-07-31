@@ -109,6 +109,7 @@ input:focus {
 
 .friend-drawer .time {
     color: grey;
+    float: right;
 }
 
 .friend-drawer--onhover:hover {
@@ -301,9 +302,10 @@ hr {
 .chat-msg {
     display: flex;
     flex-direction: column;
-    padding: 2%;
+    padding: 4%;
     overflow: auto;
-    margin-top: 9%;
+    margin-top: 14%;
+
 }
 
 .image-container {
