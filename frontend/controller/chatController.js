@@ -4,7 +4,7 @@
  *  @Author : Bhupendra Singh
  ******************************************************************************/
 
-app.controller('chatController', function ($scope, SocketService, $state, chatServices, $timeout) {
+app.controller('chatController', function ($scope, SocketService, $state, chatServices, $timeout, $window) {
     var baseUrl = window.location.origin;
     var token = localStorage.getItem("token");
 
@@ -382,48 +382,52 @@ app.controller('chatController', function ($scope, SocketService, $state, chatSe
     //     return imageExtensions.includes(extension);
     // };
     // Add the 'uploadFile' function to handle file selection
+
+    // Initialize a flag to keep track of whether the page has been reloaded or not
+    // let pageReloaded = false;
+
+    // // Function to check the screen width and reload the page if it crosses from less than 1024 to more than 1025
+    // function checkScreenWidthAndReload() {
+    //     const screenWidth = $window.innerWidth || document.documentElement.clientWidth || document.body.clientWidth;
+    //     console.log("L::::::::::::::::::::: ", screenWidth)
+
+    //     if (!pageReloaded && screenWidth >= 1025) {
+    //         // Reload the page only if it's the first time and screen width is 1025 or more
+    //         $window.location.reload();
+    //         pageReloaded = true;
+    //     } else if (screenWidth < 1025) {
+    //         // If screen width is less than 1025, reset the pageReloaded flag
+    //         pageReloaded = false;
+    //     }
+    // }
+
+    // // Add an event listener to check the screen width whenever the window is resized
+    // angular.element($window).on('resize', checkScreenWidthAndReload);
 });
 
 
 
 // Custom filter to truncate the message and add '...ish'
-app.filter('truncateMessage', ['$window', function ($window) {
-    // Define different truncation lengths based on the screen size
-    var maxCharsSmall = 10;
-    var maxCharsMedium = 15;
-    var maxCharsLarge = 22;
-
-    // Function to calculate and return the appropriate truncation length
-    function getMaxChars(windowWidth) {
-        if (windowWidth < 768) {
-            return maxCharsSmall;
-        } else if (windowWidth >= 768 && windowWidth < 1200) {
-            return maxCharsMedium;
-        } else {
-            return maxCharsLarge;
-        }
-    }
-
+app.filter('truncateMessage', function () {
     return function (input, maxLength) {
-        // Get the initial window width
-        var windowWidth = $window.innerWidth;
+        // Get the window width dynamically
+        var windowWidth = window.innerWidth;
 
-        // Calculate the desired maximum length based on the initial screen size
-        var maxChars = getMaxChars(windowWidth);
-
-        // Update the truncation length on window resize
-        angular.element($window).on('resize', function () {
-            windowWidth = $window.innerWidth;
-            maxChars = getMaxChars(windowWidth);
-        });
-
-        // If the input is null or shorter than maxChars, return it as is
+        // Calculate the desired maximum length based on the screen size
+        var maxChars = maxLength;
+        if (windowWidth < 768) {
+            // For small screens, reduce the maxChars
+            maxChars = 10;
+        } else if (windowWidth >= 768 && windowWidth < 1200) {
+            // For medium screens, use a different maxChars
+            maxChars = 15;
+        } else {
+            // For larger screens, use the original maxLength (15 in this case)
+            maxChars = 22;
+        }
         if (!input || input.length <= maxChars) {
             return input;
         }
-
-        // Truncate the input message and add '...' at the end
         return input.substring(0, maxChars) + '...';
     };
-}]);
-
+});
