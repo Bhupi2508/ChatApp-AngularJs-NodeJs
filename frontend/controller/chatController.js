@@ -386,7 +386,8 @@ app.controller('chatController', function ($scope, SocketService, $state, chatSe
     // Initialize a flag to keep track of whether the page has been reloaded or not
     // let pageReloaded = false;
 
-    // // Function to check the screen width and reload the page if it crosses from less than 1024 to more than 1025
+    // // Function to check the screen width and reload the page if it crosses from less than 1024 to more than 1025.,mvm
+    
     // function checkScreenWidthAndReload() {
     //     const screenWidth = $window.innerWidth || document.documentElement.clientWidth || document.body.clientWidth;
     //     console.log("L::::::::::::::::::::: ", screenWidth)
