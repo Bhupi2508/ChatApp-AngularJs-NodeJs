@@ -100,7 +100,7 @@
                 <div ng-if="allUserArr.length === 0" class="image-container">
                     <div class="no-message">
                         <span>No message yet! Start the conversation.</span>
-                        <i class="material-icons">insert_emoticon</i>
+                        <i class="material-icons smile-emoji">insert_emoticon</i>
                         <!-- Replace 'insert_emoticon' with the desired Material Icon -->
                     </div>
                 </div>
@@ -139,7 +139,7 @@
                     <img id="previewImage" style="max-width: 100px; max-height: 100px;" />
                 </div>
                 <i class="material-icons">mic</i>
-                <button style="font: message-box;" type="submit" ng-click="addMessage()">Send</button>
+                <button style="font: message-box;" type="submit" ng-click="addMessage()" class="send-btn">Send</button>
             </div>
         </div>
 
