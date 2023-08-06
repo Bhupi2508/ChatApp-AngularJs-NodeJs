@@ -4,7 +4,7 @@
  *  @Author : Bhupendra Singh
  ******************************************************************************/
 
-app.controller('chatController', function ($scope, SocketService, $state, chatServices, $timeout, $window) {
+app.controller('chatController', function ($scope, SocketService, $state, chatServices, $timeout, $window, accountServices) {
     var baseUrl = window.location.origin;
     var token = localStorage.getItem("token");
     var appWindow = angular.element($window);
@@ -287,6 +287,20 @@ app.controller('chatController', function ($scope, SocketService, $state, chatSe
         };
     } catch (err) {
         console.log("Error in sending message to the receivern ::::::: ", err);
+    }
+
+    try {
+        $scope.userAccount = function () {
+            accountServices.fetchAccount(token).then(function (response) {
+                console.log("result ", response.data.result)
+                $scope.accountData = response.data.result; // Assuming response.data contains the account data
+                $state.go('account', { accountData: $scope.accountData });
+            }).catch(function (error) {
+                console.log("Error occurred during account fetch: ", error);
+            });
+        };
+    } catch (err) {
+        console.log("Error getting all users :::::: ", err);
     }
 
     // Function to handle file selection

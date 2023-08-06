@@ -58,10 +58,13 @@ app.config(function ($stateProvider, $urlRouterProvider) {
         /*
     Call the Homepage HTML file and assign the controller
     */
-    $stateProvider.state('fetchAccount', {
-        url: '/fetchAccount',
+    $stateProvider.state('account', {
+        url: '/account',
         templateUrl: 'templet/Account.html',
-        controller: 'controlAccount'
+        controller: 'controlAccount',
+        params: {
+            accountData: null // Initialize as needed
+        }
     });
 
     /*

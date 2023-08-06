@@ -4,7 +4,8 @@
  *  @Author : Bhupendra Singh
  ******************************************************************************/
 
-app.controller('controlAccount', function ($scope, accountServices) {
+app.controller('controlAccount', function ($scope, accountServices, $stateParams) {
+    $scope.user = $stateParams.accountData; // Access the result object
 
     try {
         $scope.getAllUser = function () {
@@ -41,4 +42,21 @@ app.controller('controlAccount', function ($scope, accountServices) {
         console.log("Error updating account :::::: ", err);
     }
 
+    $scope.saveChanges = function () {
+        // Implement save changes logic here
+    };
+
+    $scope.cancelChanges = function () {
+        // Implement cancel changes logic here
+    };
+
+});
+
+// Define the filter in your account_Controller.js or a separate file
+app.filter('formatDate', function () {
+    return function (input) {
+        // Implement your date formatting logic here
+        // For example: return moment(input).format('YYYY-MM-DD');
+        return input;
+    };
 });
