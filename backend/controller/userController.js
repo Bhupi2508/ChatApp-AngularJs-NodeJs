@@ -136,9 +136,30 @@ module.exports.getAllUser = (req, res) => {
             res.status(500).send(response);
         } else {
             response.success = true;
-            response.result = data;
+            // Create a map of userId to profile data for easy lookup
+            const profileMap = {};
+            data.profile.forEach(profile => {
+                profileMap[profile.userId] = profile;
+            });
+
+            // Map profile data to corresponding user objects
+            response.result = data.user.map(user => {
+                const userCopy = { ...user.toObject(), profile: null }; // Convert to plain object and initialize profile
+                const userProfile = profileMap[user._id.toString()]; // Look up profile based on userId
+
+                if (userProfile) {
+                    // Map profile fields to user object
+                    userCopy.profile = {
+                        profilePic: userProfile.profilePic || "",
+                        // Add more fields as needed
+                    };
+                }
+
+                return userCopy;
+            });
             res.status(200).send(response);
         }
+
     });
 };
 

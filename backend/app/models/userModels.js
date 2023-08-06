@@ -136,12 +136,31 @@ userModel.prototype.resetPassword = (req, callback) => {
 
 // Get all users
 userModel.prototype.getAllUser = (req, callback) => {
-    console.log(":::: ", req)
+    // console.log(":::: ", req)
     User.find({}, (err, data) => {
         if (err) {
             callback("Error in model :: " + err);
         } else {
-            callback(null, data);
+            // Find user's profile data from the Account model using email
+            Account.find({}, (err, profileData) => {
+                if (err) {
+                    console.error("Error while fetching profile:", err);
+                    return callback(err);
+                }
+
+                if (!profileData) {
+                    console.log("Profile data not found.");
+                    return callback("Profile data not found");
+                }
+
+                // Include profile data in the login response
+                const userResponse = {
+                    user: data,
+                    profile: profileData
+                };
+
+                return callback(null, userResponse);
+            });
         }
     });
 };

@@ -19,6 +19,7 @@ app.controller('chatController', function ($scope, SocketService, $state, chatSe
     $scope.receiverName = localStorage.getItem('rusername');
     $scope.receiverId = localStorage.getItem('ruserId');
     $scope.receiverUserName = localStorage.getItem('rusername');
+    $scope.activeChatProfile = localStorage.getItem('activeProfile');
 
     appWindow.bind('resize', function () {
         console.log('resize*****');
@@ -27,17 +28,17 @@ app.controller('chatController', function ($scope, SocketService, $state, chatSe
         if (screenWidth < 1024) {
             logoutBtn.classList.remove('hide-logout');
         }
-        else{
-                const chatArea = document.querySelector('.chat-area');
-                const sidebar = document.querySelector('.sidebar');
-                chatArea.classList.remove('displayFlex');
-                sidebar.classList.remove('displayNone');
-                chatArea.classList.remove('show');
-                chatArea.classList.remove('displayNone');
-                sidebar.classList.remove('displayBlock');
-                // hide the back button
-                $scope.showBackButton = false;
-                logoutBtn.classList.add('hide-logout');
+        else {
+            const chatArea = document.querySelector('.chat-area');
+            const sidebar = document.querySelector('.sidebar');
+            chatArea.classList.remove('displayFlex');
+            sidebar.classList.remove('displayNone');
+            chatArea.classList.remove('show');
+            chatArea.classList.remove('displayNone');
+            sidebar.classList.remove('displayBlock');
+            // hide the back button
+            $scope.showBackButton = false;
+            logoutBtn.classList.add('hide-logout');
         }
     });
     $scope.receiverImageUrl = localStorage.getItem('receiverImageUrl');
@@ -126,8 +127,14 @@ app.controller('chatController', function ($scope, SocketService, $state, chatSe
             $scope.allUserMsg = '';
             localStorage.setItem('rusername', userData.firstname);
             localStorage.setItem('ruserId', userData._id);
+            if (userData.profile.profilePic) {
+                localStorage.setItem('activeProfile', userData.profile.profilePic);
+            } else {
+                localStorage.setItem('activeProfile', "");
+            }
 
             $scope.receiverUserName = localStorage.getItem('rusername');
+            $scope.activeChatProfile = localStorage.getItem('activeProfile');
             $scope.userMsg();
             $scope.searchResults = []
             $scope.searchText = '';
@@ -409,7 +416,7 @@ app.controller('chatController', function ($scope, SocketService, $state, chatSe
     // let pageReloaded = false;
 
     // // Function to check the screen width and reload the page if it crosses from less than 1024 to more than 1025.,mvm
-    
+
     // function checkScreenWidthAndReload() {
     //     const screenWidth = $window.innerWidth || document.documentElement.clientWidth || document.body.clientWidth;
     //     console.log("L::::::::::::::::::::: ", screenWidth)

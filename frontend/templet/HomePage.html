@@ -55,8 +55,8 @@
                 ng-show="currUserName != x.firstname" ng-class="{ 'selected-row': receiverUserName === x.firstname }">
                 <div class="profile-image">
                     <!-- Use ng-if and AngularJS expressions to conditionally display the default image URL -->
-                    <img ng-if="userListProfile" ng-src="{{ userListProfile }}" alt="Profile Image">
-                    <img ng-if="!userListProfile"
+                    <img ng-if="x.profile.profilePic" ng-src="{{ x.profile.profilePic }}" alt="Profile Image">
+                    <img ng-if="!x.profile.profilePic"
                         src="https://i.pinimg.com/236x/47/5a/86/475a86177aeedacf8dc7f5e2b4eff61f.jpg"
                         alt="Default Profile Image">
                 </div>
