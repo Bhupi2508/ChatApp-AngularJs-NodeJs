@@ -31,7 +31,7 @@ app.service('serviceLogin', function ($http, $state) {
                 localStorage.setItem("email", email);
 
                 console.log("::::::::::::: ", typeof profile, profile);
-                if (!profile) localStorage.setItem("receiverImageUrl", profile);
+                if (profile) localStorage.setItem("receiverImageUrl", profile);
 
 
                 // Navigate to the homePage state using $state
