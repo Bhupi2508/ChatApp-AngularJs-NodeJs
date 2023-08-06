@@ -7,7 +7,7 @@
 app.controller('chatController', function ($scope, SocketService, $state, chatServices, $timeout, $window) {
     var baseUrl = window.location.origin;
     var token = localStorage.getItem("token");
-
+    var appWindow = angular.element($window);
     $scope.message = "";
     $scope.allUserArr = [];
     $scope.allUserMsg = [];
@@ -19,6 +19,28 @@ app.controller('chatController', function ($scope, SocketService, $state, chatSe
     $scope.receiverName = localStorage.getItem('rusername');
     $scope.receiverId = localStorage.getItem('ruserId');
     $scope.receiverUserName = localStorage.getItem('rusername');
+    $scope.isSmallScreen = false;
+
+    appWindow.bind('resize', function () {
+        console.log('resize*****');
+        const logoutBtn = document.querySelector('.curr-user-logout');
+        const screenWidth = window.innerWidth || document.documentElement.clientWidth || document.body.clientWidth;
+        if (screenWidth < 1024) {
+            logoutBtn.classList.remove('hide-logout');
+        }
+        else{
+                const chatArea = document.querySelector('.chat-area');
+                const sidebar = document.querySelector('.sidebar');
+                chatArea.classList.remove('displayFlex');
+                sidebar.classList.remove('displayNone');
+                chatArea.classList.remove('show');
+                chatArea.classList.remove('displayNone');
+                sidebar.classList.remove('displayBlock');
+                // hide the back button
+                $scope.showBackButton = false;
+                logoutBtn.classList.add('hide-logout');
+        }
+    });
 
     console.log("user token ::::::: ", token);
     if (token === null) {
@@ -116,10 +138,8 @@ app.controller('chatController', function ($scope, SocketService, $state, chatSe
                 // Hide the sidebar and display the chat area
                 const chatArea = document.querySelector('.chat-area');
                 const sidebar = document.querySelector('.sidebar');
-
-                chatArea.style.display = 'flex';
-                sidebar.style.display = 'none';
-
+                chatArea.classList.add('displayFlex');
+                sidebar.classList.add('displayNone');
                 // Show the back button
                 $scope.showBackButton = true;
 
@@ -136,9 +156,11 @@ app.controller('chatController', function ($scope, SocketService, $state, chatSe
         const chatArea = document.querySelector('.chat-area');
         const sidebar = document.querySelector('.sidebar');
 
-        chatArea.style.display = 'none';
-        sidebar.style.display = 'block';
-
+        chatArea.classList.remove('displayFlex');
+        sidebar.classList.remove('displayNone');
+        chatArea.classList.add('displayNone');
+        sidebar.classList.add('displayBlock');
+        chatArea.classList.remove('show');
         // Hide the back button
         $scope.showBackButton = false;
     };
