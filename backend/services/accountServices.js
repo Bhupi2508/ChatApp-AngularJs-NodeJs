@@ -18,3 +18,22 @@ exports.fetchAccount = (req, callback) => {
     }
   });
 };
+
+
+// Update user account details
+exports.updateAccount = (req, newData, callback) => {
+  const model = new accountModel(); // Create an instance of accountModel
+
+  // Send data to model to update account
+  model.updateAccount(req, newData, (err, updatedData) => {
+    if (err) {
+      return callback(err);
+    } else {
+      if (!updatedData) {
+        return callback("Failed to update account"); // You can customize the error message
+      } else {
+        return callback(null, updatedData);
+      }
+    }
+  });
+};

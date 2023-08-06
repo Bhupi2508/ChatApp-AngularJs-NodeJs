@@ -30,4 +30,31 @@ app.service('accountServices', function ($http, $location) {
             }
         );
     }
+
+
+    this.updateAccount = function (data, $scope, usertoken) {
+        // Make an HTTP PUT request to update the account profile
+        $http({
+            method: 'PUT',
+            url: baseUrl + '/updateAccount',
+            data: data,
+            headers: {
+                'token': usertoken,
+            }
+        }).then(
+            // Success callback
+            function successCallback(response) {
+                console.log("Account successfully updated");
+                // Handle the updated account data if needed
+            },
+            // Error callback
+            function errorCallback(response) {
+                console.log("Account update unsuccessful");
+                console.log(response);
+                // Handle the error condition, e.g., display a message to the user
+                $scope.updateMessage = 'Account update failed';
+            }
+        );
+    }
+
 });

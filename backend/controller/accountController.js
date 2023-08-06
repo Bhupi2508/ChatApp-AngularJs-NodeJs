@@ -31,3 +31,28 @@ module.exports.fetchAccount = (req, res) => {
         }
     });
 };
+
+
+// Update user account details
+module.exports.updateAccount = (req, res) => {
+    const response = {};
+
+    // Call the updateAccount function from the accountService
+    accountService.updateAccount(req.decoded.email, req.body, (err, result) => {
+        if (err) {
+            response.success = false;
+            response.error = err;
+            res.status(500).send(response);
+        } else {
+            if (!result) {
+                response.success = false;
+                response.message = "Failed to update account";
+                res.status(400).send(response);
+            } else {
+                response.success = true;
+                response.message = "Account updated successfully";
+                res.status(200).send(response);
+            }
+        }
+    });
+};

@@ -25,6 +25,7 @@ router.get('/userMsg', authMiddleware.auth, chatController.userMsg);
 
 // Account Routes
 router.get('/fetchAccount', authMiddleware.auth, accountController.fetchAccount);
+router.post('/updateAccount', authMiddleware.auth, accountController.updateAccount);
 
 // router.post('/upload', controllerChat.uploadFile);
 
