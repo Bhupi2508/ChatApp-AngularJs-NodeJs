@@ -28,7 +28,7 @@
                         alt="Default Profile Image">
                 </div>
                 <div><button class="account-button">{{ currUserName }}</button></div>
-                <!-- <div class="user-logout"><a href="#!/login" ng-click="logout()">Logout</a></div> -->
+                <div class="curr-user-logout user-logout hide-logout"><a href="#!/login" ng-click="logout()">Logout</a></div>
             </h2>
 
             <!-- Search bar HTML code -->
@@ -39,7 +39,7 @@
                         ng-model-options="{ debounce: 500 }">
                 </div>
                 <div class="search-results" ng-if="searchResults.searchData.length > 0">
-                    <ul>
+                    <ul class="search-user-list">
                         <li ng-repeat="result in searchResults.searchData" ng-show="currUserName != result.firstname">
                             <!-- Button to select a person from search results -->
                             <button class="btn btn-primary" ng-click="person(result)">
