@@ -33,7 +33,12 @@ app.service('chatServices', function ($http) {
                 'token': usertoken,
             }
         }).then(function (response) {
-            console.log("userMsg =>>>> Response data :::::: ", response.data);
+            console.log("userMsg =>>>> Response data :::::: ", response);
+
+            if (response.data.result.length === 0) {
+                console.log("userMsg =>>>> Response data  ss:::::: ", response.data.result);
+                return response.data.result = [];
+            }
 
             let lastAaaaValue = null;
             for (let i = 0; i < response.data.result.length; i++) {
