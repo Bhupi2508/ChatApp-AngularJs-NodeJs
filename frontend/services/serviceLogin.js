@@ -22,12 +22,15 @@ app.service('serviceLogin', function ($http, $state) {
                 var name = response.data.message.firstname;
                 var token = response.data.token;
                 var email = response.data.message.email;
+                var profile = response.data.profile;
 
                 // Store user information in local storage
                 localStorage.setItem("userid", userid);
                 localStorage.setItem("name", name);
                 localStorage.setItem("token", token);
                 localStorage.setItem("email", email);
+                // localStorage.setItem("receiverImageUrl", profile);
+                
 
                 // Navigate to the homePage state using $state
                 $state.go('homePage');

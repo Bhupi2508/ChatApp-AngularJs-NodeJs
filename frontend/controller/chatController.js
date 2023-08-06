@@ -19,6 +19,7 @@ app.controller('chatController', function ($scope, SocketService, $state, chatSe
     $scope.receiverName = localStorage.getItem('rusername');
     $scope.receiverId = localStorage.getItem('ruserId');
     $scope.receiverUserName = localStorage.getItem('rusername');
+    $scope.receiverImageUrl = localStorage.getItem('receiverImageUrl');
 
     console.log("user token ::::::: ", token);
     if (token === null) {
