@@ -8,6 +8,7 @@ const express = require('express');
 const router = express.Router();
 const userController = require('../controller/userController');
 const chatController = require('../controller/chatController');
+const accountController = require('../controller/accountController');
 const authMiddleware = require('../authantication/auth');
 
 router.post('/login', userController.login);
@@ -18,6 +19,7 @@ router.post('/addMessage', chatController.addMessage);
 router.get('/getAllUser', authMiddleware.auth, userController.getAllUser);
 router.get('/userMsg', authMiddleware.auth, chatController.userMsg);
 router.post('/searchUser', authMiddleware.auth, userController.searchUser);
+router.post('/loginAccountDetails', authMiddleware.auth, accountController.loginAccountDetails);
 // router.post('/upload', controllerChat.uploadFile);
 
 module.exports = router;

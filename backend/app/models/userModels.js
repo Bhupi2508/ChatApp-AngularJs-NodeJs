@@ -6,6 +6,8 @@
 
 const mongoose = require('mongoose');
 const bcrypt = require('bcryptjs');
+const { Account } = require('./accountModel');
+
 
 // Define user schema
 const userSchema = new mongoose.Schema({
@@ -39,9 +41,32 @@ userModel.prototype.signup = (body, callback) => {
             createdAt: new Date().toISOString(), // Set createdAt to current timestamp in ISO 8601 format
             updatedAt: new Date().toISOString() // Set updatedAt to current timestamp in ISO 8601 format
         });
+
         newUser.save((err, result) => {
             if (err) return callback(err);
-            console.log("Data saved successfully :: ", result);
+
+            // Create or update the profile in the Account model
+            const accountData = new Account({
+                userId: result._id,
+                firstName: body.firstname,
+                lastName: body.lastname,
+                email: body.email,
+                profilePic: null,
+                dateOfBirth: null,
+                gender: null,
+                createdAt: new Date().toISOString(),
+                updatedAt: new Date().toISOString()
+            });
+
+            accountData.save((err, accountResult) => {
+                if (err) {
+                    console.error("Error while creating/updating account:", err);
+                } else {
+                    console.log("Account saved/updated successfully :: ", accountResult);
+                }
+            });
+
+            console.log("User Data saved successfully :: ", result);
             return callback(null, result);
         });
     });

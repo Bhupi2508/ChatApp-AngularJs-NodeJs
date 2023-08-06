@@ -156,3 +156,20 @@ module.exports.searchUser = (req, res) => {
         }
     });
 };
+
+// Get loggedin user details
+module.exports.loginAccountDetails = (req, res) => {
+    const response = {};
+
+    userService.loginAccountDetails(req, (err, result) => {
+        if (err) {
+            response.success = false;
+            response.error = err;
+            res.status(500).send(response);
+        } else {
+            response.success = true;
+            response.result = result;
+            res.status(200).send(response);
+        }
+    });
+};

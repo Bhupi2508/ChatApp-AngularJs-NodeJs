@@ -89,3 +89,15 @@ exports.searchUser = (req, callback) => {
     }
   });
 };
+
+// Get loggedin user details
+exports.loginAccountDetails = (req, callback) => {
+  // Send data to model and callback from there and here
+  userModel.loginAccountDetails(req, (err, data) => {
+    if (err) {
+      return callback(err);
+    } else {
+      return callback(null, data);
+    }
+  });
+};
