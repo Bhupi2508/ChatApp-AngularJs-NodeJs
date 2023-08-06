@@ -24,7 +24,7 @@ app.service('chatServices', function ($http) {
             console.log("Error occurred while getting users ::::::: ", error);
 
             // Return false if an error occurs
-            return false;
+            return response.data.result = false;
         });
     };
 
@@ -104,7 +104,6 @@ app.service('chatServices', function ($http) {
                 'Content-Type': 'application/json'
             }
         }).then(function (response) {
-            // Log the response from the server
             console.log("searchUser =>>>> Response ::::::: ", response);
 
             // Return the search results
@@ -114,6 +113,5 @@ app.service('chatServices', function ($http) {
             return [];
         });
     };
-
 
 });
