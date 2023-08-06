@@ -381,6 +381,7 @@ hr {
        padding: 3px;
        margin: 5px;
        border-radius: 10px;
+       cursor: pointer;
 }
 
 .no-message {

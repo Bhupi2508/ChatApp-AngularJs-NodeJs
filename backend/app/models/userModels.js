@@ -165,7 +165,7 @@ userModel.prototype.getAllUser = (req, callback) => {
     });
 };
 
-// Forgot password
+// Search user
 userModel.prototype.searchUser = (body, callback) => {
     const searchName = body.searchName;
     User.find(
@@ -177,10 +177,46 @@ userModel.prototype.searchUser = (body, callback) => {
         },
         (err, data) => {
             if (err) return callback(err);
-            if (data) return callback(null, data);
-            return callback("Invalid User");
+
+            // Get the array of user IDs from the search results
+            const userIds = data.map(user => user._id);
+
+            // Find profile data from the Account model using the user IDs
+            Account.find({ userId: { $in: userIds } }, (err, profileData) => {
+                if (err) {
+                    console.error("Error while fetching profile:", err);
+                    return callback(err);
+                }
+
+                // Create a map of userId to profile data for easy lookup
+                const profileMap = {};
+                profileData.forEach(profile => {
+                    profileMap[profile.userId] = profile;
+                });
+
+                console.log("profile :::: ", profileData);
+                // Map profile data to corresponding user objects
+                const result = data.map(user => {
+                    const userCopy = { ...user.toObject(), profile: null }; // Convert to plain object and initialize profile
+                    const userProfile = profileMap[user._id.toString()]; // Look up profile based on userId
+
+                    if (userProfile) {
+                        // Map profile fields to user object
+                        userCopy.profile = {
+                            profilePic: userProfile.profilePic || ""
+                            // Add more fields as needed
+                        };
+                    }
+
+                    return userCopy;
+                });
+
+                console.log("result :::: ", result);
+                return callback(null, result);
+            });
         }
     );
 };
+
 
 module.exports = new userModel();
