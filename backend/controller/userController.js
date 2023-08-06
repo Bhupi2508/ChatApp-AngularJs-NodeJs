@@ -61,7 +61,7 @@ module.exports.login = (req, res) => {
                 const token = jwt.sign({ email: req.body.email, id: data._id }, secret, { expiresIn: process.env.token_expire_time });
                 return res.status(200).send({
                     message: data.user,
-                    profile: data.profile.profilePic || null,
+                    profile: data.profile.profilePic || '',
                     token: token
                 });
             }

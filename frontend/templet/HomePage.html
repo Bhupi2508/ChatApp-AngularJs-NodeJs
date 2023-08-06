@@ -55,8 +55,8 @@
                 ng-show="currUserName != x.firstname" ng-class="{ 'selected-row': receiverUserName === x.firstname }">
                 <div class="profile-image">
                     <!-- Use ng-if and AngularJS expressions to conditionally display the default image URL -->
-                    <img ng-if="receiverImageUrl" ng-src="{{ receiverImageUrl }}" alt="Profile Image">
-                    <img ng-if="!receiverImageUrl"
+                    <img ng-if="userListProfile" ng-src="{{ userListProfile }}" alt="Profile Image">
+                    <img ng-if="!userListProfile"
                         src="https://i.pinimg.com/236x/47/5a/86/475a86177aeedacf8dc7f5e2b4eff61f.jpg"
                         alt="Default Profile Image">
                 </div>
@@ -84,8 +84,8 @@
                     </div>
                     <div class="profile-image">
                         <!-- Use ng-if and AngularJS expressions to conditionally display the default image URL -->
-                        <img ng-if="receiverImageUrl" ng-src="{{ receiverImageUrl }}" alt="Profile Image">
-                        <img ng-if="!receiverImageUrl"
+                        <img ng-if="activeChatProfile" ng-src="{{ activeChatProfile }}" alt="Profile Image">
+                        <img ng-if="!activeChatProfile"
                             src="https://i.pinimg.com/236x/47/5a/86/475a86177aeedacf8dc7f5e2b4eff61f.jpg"
                             alt="Default Profile Image">
                     </div>

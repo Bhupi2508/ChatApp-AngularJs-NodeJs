@@ -29,8 +29,10 @@ app.service('serviceLogin', function ($http, $state) {
                 localStorage.setItem("name", name);
                 localStorage.setItem("token", token);
                 localStorage.setItem("email", email);
-                // localStorage.setItem("receiverImageUrl", profile);
-                
+
+                console.log("::::::::::::: ", typeof profile, profile);
+                if (!profile) localStorage.setItem("receiverImageUrl", profile);
+
 
                 // Navigate to the homePage state using $state
                 $state.go('homePage');
