@@ -51,19 +51,19 @@ app.service('chatServices', function ($http) {
             let lastAaaaValue = null;
             for (let i = 0; i < response.data.result.length; i++) {
                 var a = response.data.result[i];
+            }
 
-                // Check if the current message involves the user
-                // if (
-                //     (localStorage.getItem('userid') == a.senderId && localStorage.getItem('ruserId') == a.receiverId) ||
-                //     (localStorage.getItem('userid') == a.receiverId && localStorage.getItem('ruserId') == a.senderId)
-                // ) {
-                // arr.push(a);
-                // }
+            // Check if the current message involves the user
+            // if (
+            //     (localStorage.getItem('userid') == a.senderId && localStorage.getItem('ruserId') == a.receiverId) ||
+            //     (localStorage.getItem('userid') == a.receiverId && localStorage.getItem('ruserId') == a.senderId)
+            // ) {
+            // arr.push(a);
+            // }
 
-                // Check if the current message is not sent by the user and update lastAaaaValue
-                if (localStorage.getItem('userid') !== a._id) {
-                    lastAaaaValue = a;
-                }
+            // Check if the current message is not sent by the user and update lastAaaaValue
+            if (localStorage.getItem('userid') !== a._id) {
+                lastAaaaValue = a;
             }
 
             // Check if rusername is null and update it
