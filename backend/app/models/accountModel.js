@@ -26,7 +26,7 @@ const Account = mongoose.model('profile', accountSchema);
 function accountModel() { }
 
 // Get loggedin user details
-accountModel.prototype.loginAccountDetails = (req, callback) => {
+accountModel.prototype.fetchAccount = (body, callback) => {
     Account.findOne({ email: body.email }, (err, data) => {
         if (err) {
             callback("Error in model :: " + err);
@@ -35,6 +35,28 @@ accountModel.prototype.loginAccountDetails = (req, callback) => {
         }
     });
 };
+
+
+// Update user account details
+accountModel.prototype.updateAccount = (email, newData, callback) => {
+    const updateData = {
+        firstName: newData.firstName,
+        lastName: newData.lastName,
+        profilePic: newData.profilePic || null,
+        dateOfBirth: newData.dateOfBirth || null,
+        gender: newData.gender || null,
+        updatedAt: new Date().toISOString()
+    };
+
+    Account.findOneAndUpdate({ email: email }, updateData, { new: true }, (err, updatedData) => {
+        if (err) {
+            callback("Error in model :: " + err);
+        } else {
+            callback(null, updatedData);
+        }
+    });
+};
+
 
 module.exports = {
     accountModel: accountModel,

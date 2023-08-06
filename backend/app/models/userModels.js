@@ -73,6 +73,7 @@ userModel.prototype.signup = (body, callback) => {
 };
 
 // User login
+// User login
 userModel.prototype.login = (body, callback) => {
     User.findOne({ email: body.email }, (err, data) => {
         if (err) return callback(err);
@@ -81,7 +82,27 @@ userModel.prototype.login = (body, callback) => {
             if (err) return callback(err);
             if (res) {
                 console.log("Congratulations! Login successful.");
-                return callback(null, data);
+
+                // Find user's profile data from the Account model using email
+                Account.findOne({ email: body.email }, (err, profileData) => {
+                    if (err) {
+                        console.error("Error while fetching profile:", err);
+                        return callback(err);
+                    }
+
+                    if (!profileData) {
+                        console.log("Profile data not found.");
+                        return callback("Profile data not found");
+                    }
+
+                    // Include profile data in the login response
+                    const loginResponse = {
+                        user: data,
+                        profile: profileData
+                    };
+
+                    return callback(null, loginResponse);
+                });
             } else {
                 console.log("Incorrect password. Please check it once.");
                 return callback("Incorrect password").status(500);
@@ -89,6 +110,7 @@ userModel.prototype.login = (body, callback) => {
         });
     });
 };
+
 
 // Forgot password
 userModel.prototype.forgotPassword = (body, callback) => {

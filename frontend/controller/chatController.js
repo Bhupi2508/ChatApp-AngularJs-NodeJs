@@ -19,7 +19,6 @@ app.controller('chatController', function ($scope, SocketService, $state, chatSe
     $scope.receiverName = localStorage.getItem('rusername');
     $scope.receiverId = localStorage.getItem('ruserId');
     $scope.receiverUserName = localStorage.getItem('rusername');
-    $scope.isSmallScreen = false;
 
     appWindow.bind('resize', function () {
         console.log('resize*****');
@@ -41,6 +40,7 @@ app.controller('chatController', function ($scope, SocketService, $state, chatSe
                 logoutBtn.classList.add('hide-logout');
         }
     });
+    $scope.receiverImageUrl = localStorage.getItem('receiverImageUrl');
 
     console.log("user token ::::::: ", token);
     if (token === null) {
