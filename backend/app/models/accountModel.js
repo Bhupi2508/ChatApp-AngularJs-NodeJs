@@ -26,7 +26,7 @@ const Account = mongoose.model('profile', accountSchema);
 function accountModel() { }
 
 // Get loggedin user details
-accountModel.prototype.loginAccountDetails = (req, callback) => {
+accountModel.prototype.fetchAccount = (body, callback) => {
     Account.findOne({ email: body.email }, (err, data) => {
         if (err) {
             callback("Error in model :: " + err);

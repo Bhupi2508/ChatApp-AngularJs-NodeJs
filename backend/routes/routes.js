@@ -11,15 +11,21 @@ const chatController = require('../controller/chatController');
 const accountController = require('../controller/accountController');
 const authMiddleware = require('../authantication/auth');
 
+// User Routes
 router.post('/login', userController.login);
 router.post('/signup', userController.signup);
 router.post('/forgotPassword', userController.forgotPassword);
 router.post('/resetPassword', authMiddleware.auth, userController.resetPassword);
-router.post('/addMessage', chatController.addMessage);
-router.get('/getAllUser', authMiddleware.auth, userController.getAllUser);
-router.get('/userMsg', authMiddleware.auth, chatController.userMsg);
 router.post('/searchUser', authMiddleware.auth, userController.searchUser);
-router.post('/loginAccountDetails', authMiddleware.auth, accountController.loginAccountDetails);
+router.get('/getAllUser', authMiddleware.auth, userController.getAllUser);
+
+// Chat Routes
+router.post('/addMessage', chatController.addMessage);
+router.get('/userMsg', authMiddleware.auth, chatController.userMsg);
+
+// Account Routes
+router.get('/fetchAccount', authMiddleware.auth, accountController.fetchAccount);
+
 // router.post('/upload', controllerChat.uploadFile);
 
 module.exports = router;

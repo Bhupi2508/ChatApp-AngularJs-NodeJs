@@ -6,19 +6,28 @@
 
 const accountService = require('../services/accountServices');
 
-// Get loggedin user details
-module.exports.loginAccountDetails = (req, res) => {
+// Get logged-in user details
+module.exports.fetchAccount = (req, res) => {
     const response = {};
 
-    accountService.loginAccountDetails(req, (err, result) => {
+    // Call the fetchAccount function from the accountService
+    accountService.fetchAccount(req.decoded, (err, result) => {
         if (err) {
             response.success = false;
             response.error = err;
             res.status(500).send(response);
         } else {
-            response.success = true;
-            response.result = result;
-            res.status(200).send(response);
+            if (!result) {
+                response.success = false;
+                response.result = [];
+                response.message = "No Data Found";
+                res.status(200).send(response);
+            } else {
+                response.success = true;
+                response.result = result;
+                response.message = "Data fetched Successfully";
+                res.status(200).send(response);
+            }
         }
     });
 };

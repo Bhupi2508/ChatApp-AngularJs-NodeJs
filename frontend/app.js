@@ -55,6 +55,15 @@ app.config(function ($stateProvider, $urlRouterProvider) {
         controller: 'chatController'
     });
 
+        /*
+    Call the Homepage HTML file and assign the controller
+    */
+    $stateProvider.state('fetchAccount', {
+        url: '/fetchAccount',
+        templateUrl: 'templet/Account.html',
+        controller: 'controlAccount'
+    });
+
     /*
     Set the default login state
     */
